@@ -1,0 +1,21 @@
+public class Main {
+
+//Recurrence Relation -> F(n) = F(n-1) * n, Base Condition -> F(1) = 1
+   private static int factorial(int n) {
+
+       //3. Give Base Condition to avoid infinite loop
+       if(n==1) return 1;
+
+       //1. Find solution to the sub problem
+       int solToSubProblem = factorial(n-1);
+
+       //2. Construct solution for the main problem using solution of the sub problem
+       return solToSubProblem * n;
+   }
+
+    public static void main(String[] args) {
+
+        //Find factorial of N
+        System.out.println(factorial(4));
+    }
+}

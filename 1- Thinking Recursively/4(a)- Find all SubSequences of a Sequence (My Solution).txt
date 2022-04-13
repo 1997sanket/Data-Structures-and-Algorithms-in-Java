@@ -1,0 +1,42 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+//Recurrence Relation -> SubSequence(abc) = SubSequence(bc) and while keeping subsequences of "bc" add "a" to the subsequences, thus the list will grow
+
+//This solution uses a lot of memory, we can instead return a comma separated String
+public class Main {
+    //s = abc
+    private static List<String> subSequence(String s) {
+
+        if(s.isEmpty()) {
+            List<String> list = new ArrayList<>();
+            list.add("");
+            return list;
+        }
+
+
+        //solToSubProblem =  [bc, b, c, ""]
+        List<String> solToSubProblem = subSequence(s.substring(1));
+        List<String> solToMainProblem = solToSubProblem.stream().collect(Collectors.toList());  //Copying the above list
+
+        //Iterating the subList and adding "a" to all subSequences
+        for(String foo : solToSubProblem) {
+            solToMainProblem.add(s.charAt(0) + foo);
+        }
+
+        return solToMainProblem;
+
+    }
+
+
+    public static void main(String[] args) {
+
+        //Find all Sub-sequences of a given sequence.
+        String s = "abc";
+
+        List<String> subSequences = subSequence(s);
+        System.out.println(subSequences);
+    }
+}

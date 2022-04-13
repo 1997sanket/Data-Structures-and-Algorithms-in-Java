@@ -1,0 +1,17 @@
+public class Main {
+
+    //Recurrence Relation -> S(n) = S(n-1) + n, Base Condition -> S(1) = 1
+    private static int sum(int n) {
+
+        if(n == 1) return 1;
+
+        int solToSubProblem = sum(n-1);
+        return solToSubProblem + n;
+    }
+
+    public static void main(String[] args) {
+
+        //Find Sum of n natural numbers.
+        System.out.println(sum(10));
+    }
+}

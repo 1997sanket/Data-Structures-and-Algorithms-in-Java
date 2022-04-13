@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+//Recurrence Relation -> SubSequence(abc) = SubSequence(bc) and while keeping subsequences of "bc" add "a" to the subsequences, thus the list will grow
+
+
+public class Main {
+    //s = abc
+    private static String subSequence(String s) {
+
+
+        //3. Base condition
+        if(s.isEmpty()) return "";
+
+
+        //1. Find solution to sub-problem
+        //solToSubProblem = bc,b,c,""
+        char first = s.charAt(0);
+        String solToSubProblem = subSequence(s.substring(1));
+
+
+        //2. Generate Solution for Main Problem using solution for sub-problem
+        String result = solToSubProblem;
+        String [] commaSeparated = solToSubProblem.split(",");
+        for (String subSeq: commaSeparated) {
+
+            result = result + "," + first + subSeq;
+        }
+
+        return result;
+
+    }
+
+    public static void main(String[] args) {
+
+        //Find all Sub-sequences of a given sequence.
+        String s = "abc";
+        //System.out.println(Arrays.toString(s.split(":", 0)));
+
+        String subSequences = subSequence(s);
+        System.out.println(subSequences);
+    }
+}

@@ -1,0 +1,23 @@
+public class Main {
+
+    private static int fib(int n) {
+        if(n == 1) {
+            System.out.println("Inside 1");
+            return 1;
+        }
+        if(n == 0) {
+            System.out.println("Inside 0 ");
+            return 0;
+        }
+
+        int solToSubProblem = fib(n-1) + fib(n-2);
+        return solToSubProblem;
+    }
+
+    public static void main(String[] args) {
+
+        //Find nth Fibonacci number (0, 1, 1, 2, 3, 5, 8, 13, 21, 34 ...)
+        int n = 10;
+        System.out.println(fib(n-1));
+    }
+}
