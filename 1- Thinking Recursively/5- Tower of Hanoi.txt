@@ -30,6 +30,14 @@ public class Main {
         and finally, sorted disks from mid to destination.
      */
 
+    /*
+            One more approach
+
+            1. Shift (n-1) disks from source to mid rod.
+            2. Shift the biggest disk (the disk which we currently have) from source to destination.
+            3. Shift (n-1) disks from mid rod to destination rod.
+     */
+
     public static void main(String[] args) {
         tOH(3, "X", "Y", "Z");
     }
