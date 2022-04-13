@@ -1,0 +1,52 @@
+public class Main {
+    /*
+        Smaller no - small disk
+        Bigger no - big disk
+        X- source rod
+        Y- mid rod
+        Z- destination rod
+
+        Assume you have 2 disks at first so that the problem becomes easy.
+
+        1. You will move disk 1 from X to Y.
+        2. You will move disk 2 from X to Z.
+        3. You will move disk 1 from Y to Z.
+
+        If you can solve for 2 disks then similarly you can solve for multiple disks.
+     */
+
+
+    /*
+        How to approach
+
+        1. Consider 2 disks at first.
+        2. Move disk 1 from source to mid.
+        3. Move disk 2 from source to destination.
+        4. Move disk 1 from mid to destination.
+
+        Same pattern will be followed for N number of disks.
+        Just, instead of moving disk 1 from source to mid, think of moving ascended ordered disks from 1 to mid
+        and that last biggest disk from source to destination.
+        and finally, sorted disks from mid to destination.
+     */
+
+    public static void main(String[] args) {
+        tOH(3, "X", "Y", "Z");
+    }
+
+
+    //1. Function
+    private static void tOH(int noOfDisks, String source, String mid, String destination) {
+
+        //4. Base condition
+        if(noOfDisks == 1) { System.out.println("Moving disk " + noOfDisks + " from " + source + " to " + destination); return; }
+
+
+        //2. Solve the sub problem
+        tOH(noOfDisks-1, source, destination, mid);
+
+        //3. Use sub-problem to solve main problem
+        System.out.println("Moving disk " + noOfDisks + " from " + source + " to " + destination);
+        tOH(noOfDisks-1, mid, source, destination);
+    }
+}
