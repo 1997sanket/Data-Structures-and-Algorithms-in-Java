@@ -1,0 +1,70 @@
+import java.util.Arrays;
+import java.util.List;
+
+/*
+    Problem
+
+    Find Product Sum of special array (can contain sub-arrays)
+
+    Product Sum = (sum of all elements) + (depth)
+
+    If the array does not contain any sub-arrays then the depth is 1, consecutively depth 2 for 1 sub-array, and so on.
+ */
+
+/*
+    Algorithm
+
+    1. Define the function
+    2. Traverse the list, and if it contains a sublist then calculate its value
+    3. Then using that result, generate result for the main problem.
+    4. In this case we didn't need to specifically write base condition.
+ */
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        List<Object> subList2 = Arrays.asList(1, 2);
+        List<Object> subList1 = Arrays.asList(1, 2, subList2, 3);
+        List<Object> mainList = Arrays.asList(1, 2, subList1, 3);
+
+        int result = prodSum(mainList);
+        System.out.println("Result: " + result);
+    }
+
+    //Abstraction method
+    private static int prodSum(List<Object> list) {
+        return prodSum(list, 1);
+    }
+
+    private static int prodSum(List<Object> list, int depth) {
+
+
+        /*
+             3. In this case we won't need to add base condition specifically as the base condition
+             is covered in the list traversal
+        */
+
+        //1. Find solution to sub-problem
+        int resultOfSubList = 0;    //Will store result of the identical sub-problem
+        int resultOfMainList = 0;   //Will store result of main problem
+
+        //Traverse the list and if it contains a sub-list then solve that.
+        for(Object o : list) {
+
+            if(o instanceof List) {
+                int tempDepth = depth + 1;  //Here, we cannot change the original depth, as it is needed at the end.
+                //Imagine that you will get the result for the sub-list
+                resultOfSubList = prodSum((List<Object>)o, tempDepth);
+                resultOfMainList += resultOfSubList;
+            } else {
+                resultOfMainList += (Integer)o;
+            }
+        }
+
+        //2. Return solution for main problem
+        return resultOfMainList * depth;
+
+    }
+
+}

@@ -1,0 +1,127 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/*
+    Problem
+
+    Give two Binary Trees, find out whether tree 2 is a sub tree of tree 1.
+
+
+    Algorithm
+
+    1. Traverse the tree in InOrder style and store its elements in an array.
+    2. Traverse the sub-tree in InOrder and store in a different array.
+    3. Compare the two arrays and check whether the elements are matching.
+    4. Repeat the process for PreOrder traversal because it may happen that the numbers are repeated,
+       and we may get false output.
+    5. Compare the results from InOrder and PreOrder traversals and then return the final result.
+ */
+
+
+public class Main {
+
+    private static List<Integer> mainList = new ArrayList<>();
+    private static List<Integer> subList = new ArrayList<>();
+
+    private static class Node {
+        private Node left;
+        private int data;
+        private Node right;
+
+        public Node(int data) {
+            this.data = data;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        //Main tree
+        Node mainTree = new Main.Node(1);
+        mainTree.left = new Main.Node(2);
+        mainTree.right = new Main.Node(3);
+        mainTree.left.left = new Main.Node(4);
+        mainTree.left.right = new Main.Node(5);
+        mainTree.right = new Main.Node(3);
+
+        //Sub tree
+        Node subTree = new Main.Node(2);
+        subTree.left = new Main.Node(4);
+        subTree.right = new Main.Node(5);
+
+        boolean result = func(mainTree, subTree);
+        System.out.println("Result: " + result);
+    }
+
+    private static boolean func(Node mainTree, Node subTree) {
+
+        //Traverse both the trees in InOrder style and store their data in different lists.
+        inOrder(mainTree, mainList);
+        inOrder(subTree, subList);
+
+        //This result will store comparison of two trees based on inOrder traversal
+        boolean result1 = compareLists();
+
+        //Now create new lists and do it again for PreOrder traversal.
+        mainList = new ArrayList<>();
+        subList = new ArrayList<>();
+
+        preOrder(mainTree, mainList);
+        preOrder(subTree, subList);
+
+        boolean result2 = compareLists();
+
+
+        if(result1 == result2) return true;
+
+        else return false;
+    }
+
+    //This is the part where we are using recursion.
+    //1. Function
+    private static void inOrder(Node tree, List<Integer> list) {
+
+        //4. Base condition
+        if(tree == null) return;
+
+        //2. Solve the sub problem, and assume it is solved.
+        inOrder(tree.left, list);
+        list.add(tree.data);    //3. Construct solution for main problem.
+        inOrder(tree.right, list); //2. Solving the sub-problem
+    }
+
+    private static void preOrder(Node tree, List<Integer> list) {
+
+        if(tree == null) return;
+
+        list.add(tree.data);
+        preOrder(tree.left, list);
+        preOrder(tree.right, list);
+    }
+
+
+    private static boolean compareLists() {
+        //Compare these two lists and based on the result send "true" or "false" to the User.
+        int lengthOfMainList = mainList.size();
+        int lengthOfSubList = subList.size();
+
+        //Traversing and checking
+        for(int i=0,j=0; (i<lengthOfMainList && j<lengthOfSubList); ) {
+
+            int x = mainList.get(i);
+            int y = subList.get(j);
+
+            if(x == y) {
+                i++;
+                j++;
+            } else {
+                i++;
+            }
+        }
+
+        if(lengthOfSubList == subList.size()) return true;
+
+        else return false;
+    }
+}
