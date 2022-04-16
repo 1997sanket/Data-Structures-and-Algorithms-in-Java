@@ -23,6 +23,13 @@ import java.util.List;
 
         Note: Since we have 2 choices, we need to make sure that at least one of the choices return true, if both the choices returns false, that means
                 that cell wont lead to the solution and thus we should remove that cell from the list.
+
+    Time Complexity
+
+    O(2^N^2) - 2 raised to n square.
+
+    2-> because 2 recursive calls
+    n^2-> because nxn matrix
  */
 
 public class Main {
@@ -31,7 +38,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int [][] arr = {{0, 0, 0}, {1, 0, 1}, {0, 0, 0}};
+        int [][] arr = {
+                        {0, 0, 0},
+                        {1, 0, 1},
+                        {0, 0, 0}
+                };
 
         List<List<Integer>> paths = findPaths(arr);
         System.out.println(paths);
@@ -42,17 +53,29 @@ public class Main {
     private static List<List<Integer>> findPaths(int [][] arr) {
 
         //Sending row number and column number as 0, and also row length and columns length (assuming it's a square matrix)
-        findPaths(arr, 0, 0, arr.length, arr[0].length);
+        findPaths(arr, 0, 0, arr.length, arr.length);
         return paths;
+    }
+
+    private static boolean isSafe(int [][] arr, int rowIndex, int columnIndex, int rowLength, int columnLength) {
+        if((rowIndex>=0 && rowIndex < rowLength)
+                && (columnIndex >=0 && columnIndex < columnLength)
+                && (arr[rowIndex][columnIndex] == 0 ) ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //Method returns boolean to know whether the a cell leads to a path.
     private static boolean findPaths(int [][] arr, int rowIndex, int columnIndex, int rowLength, int columnLength) {
 
+        //Base condition
+        //if we have reached our destination
+        if((rowIndex==arr.length-1) && (columnIndex == arr.length-1)) return true;
+
         //row and column index should be withing the given lengths and the cell data should be 0
-        if((rowIndex>=0 && rowIndex < rowLength)
-                && (columnIndex >=0 && columnIndex < columnLength)
-                && (arr[rowIndex][columnIndex] == 0 ) )
+        if(isSafe(arr, rowIndex, columnIndex, rowLength, columnLength))
         {
 
                 //add row and column index to the list
@@ -64,18 +87,15 @@ public class Main {
                 paths.add(list);
                 //System.out.println(paths);
 
-                //Recursion part to traverse right ways
+                //Recursion part to traverse right ways (x-direction)
                 boolean flag1 = findPaths(arr, rowIndex, columnIndex + 1, rowLength, columnLength);
 
-                //To traverse down ways.
+                //To traverse down ways. (y-direction)
                 boolean flag2 = findPaths(arr, rowIndex + 1, columnIndex, rowLength, columnLength);
 
            // System.out.println("for path: " + paths.get(paths.size()-1) + " flag1 = " + flag1 + " and flag2 = " + flag2);
 
-                //if both flags are false but the cell is our destination cell then return true.
-                if((rowIndex==arr.length-1) && (columnIndex == arr.length-1)) return true;
-
-                //if both flags are , then remove path from the list and return false because it wont lead to destination.
+                //if both flags are , then remove path from the list and return false because it wont lead to destination.(Backtracking move)
                 if((flag1 == false) && (flag2 == false)) {
 
                     //Remove path from list
