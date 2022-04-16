@@ -1,0 +1,99 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        //4x4 matrix
+        int [][] arr = {
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0}
+
+        };
+
+
+        boolean result = placeTheQueen(arr,0, arr.length);
+
+        //if the result is true then print the Matrix
+        if(result == true) {
+            for(int i=0; i<arr.length; i++){
+
+                for(int j=0; j<arr[i].length; j++) {
+                    System.out.print(arr[i][j] + " ");
+                }
+                System.out.println();
+            }
+
+        } else {
+            System.out.println("No solution for this matrix");
+        }
+    }
+
+    private static boolean placeTheQueen(int[][] arr, int col, int length) {
+
+        //5. GOAL
+        //Base condition
+        if(col>=length) return true;
+
+        //1. Choice
+        //Checking all cells in col 1, then col 2 ... so on.
+        for(int row =0; row < length; row++) {
+
+            //2. Constraint
+            //check whether the cell is safe to place the queen.
+            if(isSafe(arr, row, col, length)) {
+
+                //place the queen.
+                arr[row][col] = 1;
+
+                //3. Recursion
+                //Do the same checkings for the next column and return true if the result is successful.
+                if(placeTheQueen(arr, col+1, length)) {
+                    return true;
+                }
+
+                //4. Backtracking
+                //if the recursive function returns false, i.e queen cannot be place in this cell, then backtrack and check in the next row of same column
+                arr[row][col] = 0;
+            }
+
+        }
+
+        //loop is complete when a queen cannot be place in any row in a column.
+        return false;
+    }
+
+    private static boolean isSafe(int[][] arr, int row, int col, int length) {
+
+        /*
+            1. Since we are going column wise we don't need to check vertically, as we are already traversing from one column to another.
+            Going to a new column, we know this column is queen free
+
+            2. We also don't have to check diagonally right-upwards and diagonally right-downwards, because we know there is not queen in columns afters us.
+         */
+
+        //check horizontally (row will remain same, column will change, but we will always check from i.e j=0 till the column number because we dont HAVE to go till end)
+        for(int j = 0; j<col; j++) {
+            if(arr[row][j] == 1) return false;
+        }
+
+        //check diagonally left-upwards
+        for(int i=row, j=col; (i>=0 && j>=0); i--,j--) {
+            if(arr[i][j] == 1) return false;
+        }
+
+        //check diagonally left-downwards
+        for(int i=row,j=col; (i<length && j>=0); i++,j--) {
+            if(arr[i][j] == 1) return false;
+        }
+
+        //if all for loops are OK then return true
+        return true;
+    }
+
+}
