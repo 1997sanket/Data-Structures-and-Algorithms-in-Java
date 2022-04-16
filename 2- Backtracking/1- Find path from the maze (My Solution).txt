@@ -1,0 +1,76 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/*
+    Problem
+
+    1. Given a matrix (maze), find a path from source(0,0) to destination(2,2) where the path only contains zeros.
+
+    0 1 0
+    0 1 1
+    0 0 0
+
+   Algorithm
+
+   1. This is a backtracking problem because, if the solution is not correct we need to come back and try
+        different solution.
+   2. Backtracking approach:
+        - Choices -> we can either traverse right side or downside.
+        - Constrains -> Only need 0s in the path and should not traverse outside matrix.
+        - Recursion -> after reaching a different cell, we need to again perform the same method.
+ */
+
+public class Main {
+
+    private static List<List<Integer>> paths = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+        int [][] arr = {{0, 1, 0}, {0,1,1}, {0, 0, 0}};
+
+        List<List<Integer>> paths = findPaths(arr);
+        System.out.println(paths);
+
+    }
+
+    //Returns List of Lists, the inner list contains two elements, i.e row and column number.
+    private static List<List<Integer>> findPaths(int [][] arr) {
+
+        //Sending row number and column number as 0, and also row length and columns length (assuming it's a square matrix)
+        findPaths(arr, 0, 0, arr.length, arr[0].length);
+        return paths;
+    }
+
+    private static void findPaths(int [][] arr, int rowIndex, int columnIndex, int rowLength, int columnLength) {
+
+        //row and column index should be withing the given lengths and the cell data should be 0
+        if((rowIndex>=0 && rowIndex < rowLength)
+                && (columnIndex >=0 && columnIndex < columnLength)
+                && (arr[rowIndex][columnIndex] == 0))
+        {
+            //add row and column index to the list
+            List<Integer> list = new ArrayList<>();
+            list.add(rowIndex);
+            list.add(columnIndex);
+
+            //add that list to the main list
+            paths.add(list);
+            //System.out.println(paths);
+
+            //Recursion part to traverse right ways
+            findPaths(arr, rowIndex, columnIndex + 1, rowLength, columnLength);
+
+            //To traverse down ways.
+            findPaths(arr, rowIndex +1, columnIndex, rowLength, columnLength);
+
+        }
+
+        //If the condition fails, then just go back and try next cell.
+        else {
+            return;
+        }
+    }
+
+}
