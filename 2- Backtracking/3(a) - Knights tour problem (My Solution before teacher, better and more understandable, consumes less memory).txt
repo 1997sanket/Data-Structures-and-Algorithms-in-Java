@@ -1,0 +1,101 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/*
+        Problem
+        Given 8x8 chess board, make sure the Knight visits all the cells
+
+        Algo
+        1. Choices - we can go in 8 directions (down, up, right, left)
+        2. Constraints - don't go outside matrix and the cell should be not visited.
+        3. Recursion - after successfully placing one knight do the same for next cell in the choice.
+        4. Goal - When we have reached all the cells then stop.
+
+        Caveats in this problem
+        3. We need to follow certain order when choosing our choices.
+                -Here we are following anti-clockwise direction
+                   - starting from downwards right we go till downwards left.
+
+       Read more from the book
+
+
+     Traversals
+     (2,1) -> downwards right
+     (1,2) -> rightwards right
+     (-1,2) -> rightwards left
+     (-2,1) -> upwards right
+     (-2,-1) -> upwards left
+     (-1,-2) -> leftwards right
+     (1, -2) -> leftwards left
+     (2,-1) -> downwards left
+
+ */
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int [][] arr = {
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0}
+        };
+
+        //Print the board if we get a solution.
+        if(knightsTour(arr, 0, 0,0)) {
+
+            for(int i=0; i<arr.length; i++) {
+                for(int j=0; j<arr[i].length; j++) {
+                    System.out.print(arr[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    private static boolean knightsTour(int[][] arr, int row, int col, int counter) {
+
+        //5. Goal (base condition)
+        if(counter == (arr.length * arr.length)) return true;
+
+            //2. Constraint
+            if(isSafe(arr, row, col)) {
+
+                    counter++;
+                    arr[row][col]=counter;
+
+                    //3. Recursion
+                    //Going Anti-clockwise
+                    //If a choice succeeds then do the same
+                    if(knightsTour(arr, row+2, col+1, counter)) return true;
+                    if(knightsTour(arr, row+1, col+2, counter)) return true;
+                    if(knightsTour(arr, row-1, col+2, counter)) return true;
+                    if(knightsTour(arr, row-2, col+1, counter)) return true;
+                    if(knightsTour(arr, row-2, col-1, counter)) return true;
+                    if(knightsTour(arr, row-1, col-2, counter)) return true;
+                    if(knightsTour(arr, row+1, col-2, counter)) return true;
+                    if(knightsTour(arr, row+2, col-1, counter)) return true;
+
+                //4. Backtracking (if all choices fail)
+                    counter--;
+                    arr[row][col] = 0;
+            }
+
+        //If it's not safe then return false
+        return false;
+
+    }
+
+    private static boolean isSafe(int[][] arr, int row, int col) {
+        return(row>=0 && row<arr.length &&
+                col>=0 && col<arr.length &&
+                arr[row][col]==0);
+    }
+}
