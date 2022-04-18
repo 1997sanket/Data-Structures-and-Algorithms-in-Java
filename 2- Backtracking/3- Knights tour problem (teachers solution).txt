@@ -49,7 +49,8 @@ public class Main {
                 {0,0,0,0,0,0,0,0}
         };
 
-        if(knightsTour(arr, 0, 0,0)) {
+        arr[0][0] = 1;	//Since we are starting from 1st but cannot check it, we mark it as visited and pass 1 as counter
+        if(knightsTour(arr, 0, 0,1)) {
 
             //print the board
             for(int i=0; i<arr.length; i++) {
@@ -64,7 +65,7 @@ public class Main {
     private static boolean knightsTour(int[][] arr, int row, int col, int counter) {
 
         //5. Goal (base condition)
-        if(counter == 63) return true;
+        if(counter == 64) return true;
 
         int i,j;
         //1. Choices
@@ -76,7 +77,6 @@ public class Main {
             if(isSafe(arr, i, j)) {
 
                     counter++;
-                //System.out.println(counter);
                     arr[i][j]=counter;
 
                     //3. Recursion
