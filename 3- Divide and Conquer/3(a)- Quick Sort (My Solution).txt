@@ -1,0 +1,91 @@
+
+import java.util.Arrays;
+
+/*
+        Problem
+            - Implement quick sort
+
+        Algo
+            - Find a pivot. elements lesser than pivot should be on the left side of pivot and wise versa.
+            - now do the same for elements on left side of pivot and elements to the right side of pivot
+ */
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[] arr = {1, 4, 2, 3};
+        quickSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private static void quickSort(int[] arr, int startIndex, int endIndex) {
+
+//        System.out.println("start index : " + startIndex + " , end index : " + endIndex);
+        //base condition
+        if(startIndex >= endIndex) return;
+
+        //Get mid index for Pivot
+        int midIndex = (startIndex + endIndex)/2;
+        int pivot = arr[midIndex];
+//        System.out.println("pivot = " + pivot);
+
+        //Because mid-index will change while shifting.
+        int k = midIndex;
+
+        int temp;
+        int i = startIndex;
+        int j = endIndex;
+        //Comparing pivot will all the left elements to the pivot in the array.
+        while(i < k) {
+
+            if(arr[i] >= pivot) {
+
+                //left shift till k
+                temp = arr[i];
+                int l;
+                for(l=i; l<k; l++) {
+                    arr[l] = arr[l+1];
+                }
+                arr[l] = temp;
+                k--; //because pivot element is shifted one position to left.
+            }
+            else {
+                i++;
+            }
+        }
+
+//        System.out.println("after left shift : " + Arrays.toString(arr));
+//        System.out.println("i j k " + i + j + k);
+
+        //Comparing pivot with all the right side elements
+        while(j>k) {
+            if(arr[j] < pivot) {
+
+                //right-shift till k
+                temp = arr[j];
+                int l;
+                for(l=j; l>k; l--) {
+                    arr[l] = arr[l-1];
+                }
+
+                arr[l] = temp;
+                k++; //because pivot is shift one position to right.
+
+            }
+            else {
+                j--; //if element is already greater than pivot
+            }
+        }
+
+//        System.out.println("after right shift : " + Arrays.toString(arr));
+//        System.out.println("i j k " + i + j + k);
+
+
+        //do the above steps for left of pivot
+        quickSort(arr, startIndex, k);
+
+        //do the same for right of pivot
+        quickSort(arr, k+1, endIndex);
+
+    }
+}
