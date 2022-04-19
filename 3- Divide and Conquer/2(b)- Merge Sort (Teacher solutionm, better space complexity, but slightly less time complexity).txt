@@ -1,0 +1,108 @@
+
+import java.util.Arrays;
+
+/*
+    Problem
+        - Implement Merge Sort
+
+    Concept
+        - Divide the main problem in smaller sub-problems
+        - Conquer the main problem by solving each sub-problems recursively.
+        - Combine solutions of sub-problems into main solution.
+
+    This is teacher's method.
+        - Little difficult to understand
+        - But uses less space complexity.
+
+
+    Algo
+        - call recursive functions for sub array indexes.
+        - when start and end index are same that means only 1 element in an array then just return. (base condition)
+        - after having getting two halves of the array, send them to the merger. (not actually send the arrays, just need to send the indexes)
+        - In the merger, create two sub-arrays from the start, mid and end index.
+        - COpy the two halves in two sub arrays.
+        - Now compare the two sub arrays and populate the main array.
+        - while populating, make sure main array index is same as start index. (because start index can be non-zero)
+        - after comparing, now populate the remaining elements from any of the sub arrays in the main array.
+*/
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] arr = {3, 2, 1, 5, 4};
+
+        mergeSort(arr, 0, arr.length - 1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private static void mergeSort(int[] arr, int startIndex, int endIndex) {
+
+        //when we narrow down to 1 element (base condition)
+        if (startIndex == endIndex) return;
+
+        //calculating mid-index
+        int midIndex = (startIndex + endIndex) / 2;
+
+        //Sending indexes for the first half of the array
+        mergeSort(arr, startIndex, midIndex);
+
+        //Sending indexes for the second half of the array
+        mergeSort(arr, midIndex + 1, endIndex);
+
+        //Sending indexes to differentiate first and second half and then merge the two halves to main array.
+        merger(arr, startIndex, midIndex, endIndex);
+    }
+
+    private static void merger(int[] arr, int startIndex, int midIndex, int endIndex) {
+
+        //length of first half of the array
+        int firstHalfLength = midIndex - startIndex + 1;
+
+        //length of second half of the array.
+        int secondHalfLength = endIndex - midIndex;
+
+        //Create two sub arrays
+        int [] firstHalfArray = new int[firstHalfLength];
+        int [] secondHalfArray = new int[secondHalfLength];
+
+        //COpy first half in first array
+        for(int i=0; i<firstHalfLength; i++) {
+            firstHalfArray[i] = arr[startIndex + i];
+        }
+
+        //Copy second half in second array
+        for(int i=0; i<secondHalfLength; i++) {
+            secondHalfArray[i] = arr[midIndex+1+i];
+        }
+
+
+        //Now compare first and second array and change accordingly in the main array
+        int i=0, j=0;
+        int k=startIndex; // this is very important, k cannot start from 0, because for the second half of the array, start index could be after mid-point, which would be non-zero
+        for(; (i<firstHalfLength && j<secondHalfLength); k++) {
+
+            if(firstHalfArray[i] <= secondHalfArray[j]) {
+                arr[k] = firstHalfArray[i];
+                i++;
+            }
+            else {
+                arr[k] = secondHalfArray[j];
+                j++;
+            }
+        }
+
+        //for remaining elements in sub-arrays
+        while(i<firstHalfLength) {
+            arr[k] = firstHalfArray[i];
+            i++;
+            k++;
+        }
+        while(i<secondHalfLength) {
+            arr[k] = secondHalfArray[j];
+            j++;
+            k++;
+        }
+
+    }
+}

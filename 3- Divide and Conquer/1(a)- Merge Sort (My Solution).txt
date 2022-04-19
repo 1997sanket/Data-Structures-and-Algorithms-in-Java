@@ -1,0 +1,90 @@
+import java.util.Arrays;
+
+/*
+    Problem
+        - Implement Merge Sort
+
+    Concept
+        - Divide the main problem in smaller sub-problems
+        - Conquer the main problem by solving each sub-problems recursively.
+        - Combine solutions of sub-problems into main solution.
+
+
+    Algo
+        - Imagine the main array has 2 elements.
+        - Use recursion to pass the first and second half of the array.
+        - Now we have two sub arrays each of length 1.
+        - Now return this sub arrays of 1 length.
+        - Send these sub arrays to a merger, where they will be compared and merged.
+ */
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int [] arr = {3, 1, 5, 2, 0, 3};
+
+        //Merge sort will return us sorted array.
+        int [] brr = mergeSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(brr));
+     }
+
+    private static int[] mergeSort(int[] arr, int startIndex, int endIndex) {
+
+        //base condition (will have an array of length 1)
+        if(startIndex == endIndex) {
+            int brr[] = new int[1];
+            brr[0] = arr[startIndex];
+            return brr;
+        }
+
+        //calculating mid-index
+        int midIndex = (startIndex + endIndex)/2;
+
+        //Sending first half of the array
+        int [] x = mergeSort(arr, startIndex, midIndex);
+
+        //Sending second half of the array
+        int [] y = mergeSort(arr, midIndex+1, endIndex);
+
+        //Merge the two sorted arrays
+        return merger(x, y);
+    }
+
+    private static int[] merger(int[] x, int[] y) {
+
+        //Create new array of double the length
+        int [] z = new int[(x.length) + (y.length)];
+        int i, j, k;
+
+        //Loop through the sub-arrays, compare them and populate the main array, using "<=" in case certain elements are repeated.
+        for(i=0, j=0, k=0; (i<x.length && j<y.length); k++) {
+
+            if(x[i] <= y[j]) {
+                z[k] = x[i];
+                i++;
+            }
+            else {
+                z[k] = y[j];
+                j++;
+            }
+        }
+
+        //If X array is finished before the Y array, copy all elements of Y array to Z array
+        while(j<y.length) {
+            z[k] = y[j];
+            j++;
+            k++;
+        }
+
+        //If Y array is finished before X array, copy all elements of X array to Z array
+        while(i<x.length) {
+            z[k] = x[i];
+            i++;
+            k++;
+        }
+
+        //return the merged array.
+        return z;
+    }
+}
