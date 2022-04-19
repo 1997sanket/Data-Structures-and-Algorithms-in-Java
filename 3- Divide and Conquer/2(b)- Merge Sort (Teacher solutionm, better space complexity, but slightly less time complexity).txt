@@ -14,6 +14,10 @@ import java.util.Arrays;
         - Little difficult to understand
         - But uses less space complexity.
 
+    Complexities
+	   - Time will be O(nlog(n)). logN for dividing the arrays in half and N for the merger where we are travelling the whole array to compare.
+	   - Space will be O(n). Because we are creating two sub-arrays in the merger for the main array.
+
 
     Algo
         - call recursive functions for sub array indexes.
