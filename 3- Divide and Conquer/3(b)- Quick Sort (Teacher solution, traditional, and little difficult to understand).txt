@@ -1,0 +1,60 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] arr = {5, 4, 3, 2 ,1 };
+        quickSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private static void quickSort(int[] arr, int startIndex, int endIndex) {
+
+        int pivotIndex;
+
+        //base condition(VVI)
+        if(startIndex < endIndex) {
+
+            pivotIndex = partition(arr, startIndex, endIndex);
+
+            //After partitioning pivot element is at its sorted place, now don't touch it and do the same for left and right sub-arrays.
+            quickSort(arr, startIndex, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, endIndex);
+
+        }
+    }
+
+    private static int partition(int[] arr, int startIndex, int endIndex) {
+
+        int pivot = arr[startIndex];    //VVVI (doesn't work if pivot is middle)
+        int i = startIndex;
+        int j = endIndex;
+
+        while(i<j) {
+
+            //second condition is VVVI
+            //Here (arr.length-1) is VVI because in case our array is in descending order, it will go till the last element. Because we are first checking condition and the incrementing
+            while((arr[i] <= pivot) && (i<(arr.length-1))) i++;
+
+            //second condition is VVVI
+            //Here (j>0) is VVI, in case our array is already sorted, this will prevent j from going to -1. Since we are checking condition first and then incrementing.
+            while((arr[j] > pivot) && (j>0)) j--;
+
+            //VVVI step. If we don't check whether i<j, i and j might have crossed each other and if we swap, then our pivot won't be its perfect place. Because till this point we swapped based on our pivot.
+            if(i<j) {
+                swap(arr, i, j);
+            }
+        }
+
+        //Swap pivot with the current jth index (VVI)
+        swap(arr, startIndex, j);
+
+        return j;
+    }
+
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}

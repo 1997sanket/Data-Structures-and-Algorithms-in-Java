@@ -8,6 +8,7 @@ import java.util.Arrays;
         Algo
             - Find a pivot. elements lesser than pivot should be on the left side of pivot and wise versa.
             - now do the same for elements on left side of pivot and elements to the right side of pivot
+		   - Here I have done left and right shifting.
  */
 
 public class Main {
