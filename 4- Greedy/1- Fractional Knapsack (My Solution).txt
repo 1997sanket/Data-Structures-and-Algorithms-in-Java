@@ -1,0 +1,77 @@
+import java.util.Arrays;
+import java.util.Collections;
+
+/*
+    Problem
+        - Fractional KnapSack problem.
+
+    Solution
+        - Using Greedy Algorithm
+
+    Time complexity
+        - n(for creating the new array of price/unit) + nlogn(for sorting the price/unit array) + n^2(for searching in prices and weights)
+
+    Teacher solution
+        - She used Item class to store the values. And created Items array.
+ */
+public class Main {
+    public static void main(String[] args) {
+        int[] weights = {10, 40, 20, 30};
+        int[] prices =  {60, 40, 100, 120};
+        int bagWeightCapacity = 50;
+
+        int result = fractKnapsack(weights, prices, bagWeightCapacity);
+        System.out.println("Total value for 50kgs of products = " + result);
+    }
+
+    private static int fractKnapsack(int[] weights, int[] prices, int bagWeightCapacity) {
+
+        //Solution
+        int result = 0;
+
+        //To keep track of weight of the bag.
+        int currentWeight = 0;
+        int length = weights.length;
+
+        //This will store prices per unit of the products
+        Integer[] pricesPerUnit = new Integer[length];
+
+        for(int i=0; i<length; i++) {
+            int weight = weights[i];
+            int price = prices[i];
+            pricesPerUnit[i] = price/weight;
+        }
+
+//        System.out.println(Arrays.toString(pricesPerUnit));
+
+        //Sort in descending. (highest value will be first)
+        Arrays.sort(pricesPerUnit, Collections.reverseOrder());
+
+        //traverse the prices and weight array, and if price/weight == pricePerUnit then add the price in the result.
+        for(int i=0; ((i<length) && (currentWeight<bagWeightCapacity)); i++) {
+            int pricePerUnit = pricesPerUnit[i];
+            int x;
+            int j;
+
+            //Search the prices and weight array for the pricePerUnit we got above.
+            for(j=0; ;j++) {
+                x = (prices[j]/weights[j]);
+                if(x == pricePerUnit) break; //if found break
+            }
+
+            //check if the current weight will exceed if we add directly, if yes, then calculate price for the remaining weight
+            if((currentWeight + weights[j]) > bagWeightCapacity) {
+                int diffWeight = bagWeightCapacity - currentWeight;
+                int finalValue = diffWeight * pricePerUnit;
+                result += finalValue; //add the price and break.
+                break;
+            }
+
+            result += prices[j];
+            currentWeight += weights[j];
+        }
+
+
+        return result;
+    }
+}
