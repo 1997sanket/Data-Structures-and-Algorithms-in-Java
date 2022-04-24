@@ -1,0 +1,51 @@
+package com.kamble.demo;
+import java.util.Arrays;
+
+public class Main {
+    private static int[] nodeWeight;
+    public static void main(String[] args) {
+        int[][] matrix = {
+                {0,3,5,6,0,8,0},
+                {3,0,0,4,2,0,5},
+                {5,0,0,0,0,4,0},
+                {6,4,0,0,0,1,6},
+                {0,2,0,0,0,0,10},
+                {8,0,6,1,0,0,8},
+                {0,8,0,6,10,8,0}
+        };
+
+        //TO update with minimum weights
+        nodeWeight = new int[matrix.length];
+
+        //only source node weight should be '0', rest should be infinity
+        for(int i=1; i< nodeWeight.length; i++) {
+            nodeWeight[i] = Integer.MAX_VALUE;
+        }
+
+        dijkstra(matrix, 0);    //0->A
+        System.out.println("Shortest paths from A : " + Arrays.toString(nodeWeight));
+    }
+
+    private static void dijkstra(int[][] matrix, int node) {
+
+        //Base condition, if we have reached all the nodes then just return.
+        if(node == matrix.length) return;
+
+        //Now travel to all the nodes connected to this node.
+        for(int i=0; i< matrix.length; i++) {
+
+            //if the node is connected to our current node.
+            if((matrix[node][i] != 0)) {
+
+                //check if the travelling weight is lesser than the current weight of the node, if yes then change the current weight
+                if((matrix[node][i] + nodeWeight[node]) < nodeWeight[i]) {
+                    nodeWeight[i] = (matrix[node][i] + nodeWeight[node]);
+                }
+            }
+        }
+
+        //Send next node
+        node++;
+        dijkstra(matrix, node);
+    }
+}
