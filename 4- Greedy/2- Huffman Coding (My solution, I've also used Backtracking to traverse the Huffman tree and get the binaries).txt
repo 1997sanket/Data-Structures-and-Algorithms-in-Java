@@ -1,0 +1,181 @@
+package com.kamble.demo;
+
+import java.util.*;
+
+class Node {
+    Data data;
+    Node left;
+    Node right;
+    Integer leftEdge;
+    Integer rightEdge;
+
+    Node(Data data, Node left, Node right, Integer leftEdge, Integer rightEdge) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
+        this.leftEdge = leftEdge;
+        this.rightEdge = rightEdge;
+    }
+}
+
+class Data {
+    Character letter;
+    Integer frequency;
+
+    Data(Character letter, Integer frequency) {
+        this.letter = letter;
+        this.frequency = frequency;
+    }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "letter=" + letter +
+                ", frequency=" + frequency +
+                '}';
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        //String s = "BABCCDDDCD";   //Basically ABBCCCDDDD is jumbled
+        String s = "ABBCCCDDDD";
+
+        Map<Character, StringBuilder> result = encode(s);
+        System.out.println("final encoded result : " + result);
+    }
+
+    private static Map<Character, StringBuilder> encode(String s) {
+
+        //Count frequency of each letter
+        Map<Character, Integer> letters = countFrequency(s);
+
+        //Now sort these characters in terms of frequency.
+
+        //1. Collect the data in a list
+        List<Data> dataList = getListFromMap(letters);
+
+        //2. Sort the list based on frequency
+        dataList.sort((d1, d2) -> d1.frequency.compareTo(d2.frequency));
+//        System.out.println("sorted list : " + dataList);
+
+        //traverse the list and create tree and get the root.
+        Node root = createHuffmanTree(dataList);
+
+//        System.out.println("Printing tree inOrder"); (optional, just for understanding)
+//        printTreeInOrder(root);
+
+        //Now traverse the String for each letter to get the bits and generate the huffmanCode
+        Map<Character, StringBuilder> finalResult = new HashMap<>();
+        for(int i=0; i<s.length(); i++) {
+            char c = s.charAt(i);
+            StringBuilder result = new StringBuilder();
+            getCode(c, root, result);
+            //now add this result in a map
+            finalResult.put(c, result);
+//            System.out.println("final map so far : " + finalResult);
+        }
+
+        return finalResult;
+    }
+
+    private static boolean getCode(char c, Node root, StringBuilder result) {
+
+        //if data found and in constraint
+        if((root.left == null) && (root.right == null)) {
+            if((root.data.letter) == c) {
+//                System.out.println("Data matched");
+                return true;
+            }
+            else return false;
+        }
+
+        result.append(root.leftEdge.toString());
+//        System.out.println("Appended: " + root.leftEdge.toString());
+        //choice 1
+        if(getCode(c, root.left, result)) return true;
+
+        //Backtracking move (remove last added character)
+//        System.out.println("Deleting: " + result.charAt(result.length()-1));
+        result.deleteCharAt(result.length()-1);
+
+        result.append(root.rightEdge.toString());
+//        System.out.println("Appended: " + root.rightEdge.toString());
+        if(getCode(c, root.right, result)) return true;
+
+//        System.out.println("Deleting: " + result.charAt(result.length()-1));
+        //Backtracking move
+        result.deleteCharAt(result.length()-1);
+
+        return false;
+    }
+
+    private static void printTreeInOrder(Node root) {
+
+        if(root == null) return;
+
+        printTreeInOrder(root.left);
+        System.out.print(root.data);
+        printTreeInOrder(root.right);
+    }
+
+    private static Node createHuffmanTree(List<Data> dataList) {
+
+        //root node
+        Node root = null;
+
+        Data d1 = dataList.get(0);  //first data from the list
+        Node n1 = new Node(d1, null, null, -1, -1);
+
+        for(int i=1; i<dataList.size(); i++) {
+            Data d2 = dataList.get(i);  //second data from this list
+            Data mergedData = new Data('-', (d1.frequency+d2.frequency));
+
+            Node n2 = new Node(d2, null, null, -1, -1);
+            Node mergedNode = new Node(mergedData, n1, n2, 0, 1);
+
+            d1=mergedData; //now our d1 is the merged data
+            n1=mergedNode;
+            root = mergedNode;  //make this merged node as root node.
+        }
+
+        return root;
+    }
+
+    private static List<Data> getListFromMap(Map<Character, Integer> letters) {
+        Set<Character> keys = letters.keySet();
+        List<Data> dataList = new ArrayList<>();
+
+        Iterator<Character> itr = keys.iterator();
+        while(itr.hasNext()) {
+            char c = itr.next();
+            int value = letters.get(c);
+            Data d = new Data(c,value);
+            dataList.add(d);
+        }
+
+//        System.out.println("data list : " + dataList);
+        return dataList;
+    }
+
+    private static Map<Character, Integer> countFrequency(String s) {
+        Map<Character, Integer> letters = new HashMap<>();
+
+        for(int i=0; i<s.length(); i++) {
+
+            //check if the char is present in the map, if not add and increment the frequency counter
+            char x = s.charAt(i);
+            if(!letters.containsKey(x)) {
+                letters.put(x, 1);
+            }
+            else {
+                int value = letters.get(x);
+                value++;
+                letters.put(x,value);
+            }
+        }
+//        System.out.println("map : " + letters);
+        return letters;
+    }
+}
