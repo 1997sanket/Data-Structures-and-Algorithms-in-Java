@@ -1,0 +1,28 @@
+package com.kamble.demo;
+
+public class Main {
+    public static void main(String[] args) {
+        int noOfStairs = 4;
+        int noOfSteps = 3;
+
+        int noOfWays = stairCase(noOfStairs, noOfSteps);
+        System.out.println("No of ways to travel the staircase : " + noOfWays);
+    }
+
+    private static int stairCase(int noOfStairs, int noOfSteps) {
+
+        //if noOfStairs are 1 there is only 1 way, so return 1
+        //if noOfStairs are 0 return 1
+        //if noOfStairs <0 return 0
+        if(noOfStairs == 1 || noOfStairs == 0) return 1;
+
+        if(noOfStairs < 0) return 0;
+
+        int noOfWays = 0;
+        for(int i=1; i<=noOfSteps; i++) {
+            noOfWays += stairCase(noOfStairs-i, noOfSteps);
+        }
+
+        return noOfWays;
+    }
+}
