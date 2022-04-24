@@ -1,0 +1,44 @@
+package com.kamble.demo;
+
+import java.util.Arrays;
+
+public class Main {
+
+    private static int[] memo;
+
+    public static void main(String[] args) {
+
+        //find nth fibonacci number (0 1 1 2 3 5 8...)
+        int n = 15; //input
+
+        //create memoization array for that many numbers.
+        memo = new int[n];
+
+        //initialize array with -1
+        for(int i=0; i<memo.length; i++) {
+            memo[i] = -1;
+        }
+
+        System.out.println(fib(n-1));   //We need to send here one value less to get the nth fib number
+        System.out.println("Final memo array + " + Arrays.toString(memo));
+    }
+
+    private static int fib(int n) {
+
+        //if we already have that result in memo, return it
+        if(memo[n] != -1) return memo[n];
+
+        //for 1st and 2nd element, answer is always 0 and 1 respectively.
+        if(n==0 || n==1) {
+            //store the result in memo
+            memo[n] = n;
+            return n;
+        }
+
+        int result = fib(n-1) + fib(n-2);
+        //when we have calculated the result store it in the memo, so we don't have to calculate again, if needed.
+        memo[n] = result;
+
+        return result;
+    }
+}
