@@ -1,0 +1,62 @@
+package com.kamble.demo;
+
+/*
+    Algo
+        We have two choice
+            either we can include and Item or exclude it.
+            we have to calculate profit for both and then select max between them.
+
+
+    Note
+        You don't have to trace each recursion call, just write the correct formula and make sure the base case is correct.
+ */
+
+class Item {
+    int weight;
+    int price;
+
+    public Item(int weight, int price) {
+        this.weight = weight;
+        this.price = price;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Item[] items = {
+          new Item(7, 15),
+          new Item(4, 8),
+          new Item(4, 8)
+        };
+
+        int capacity = 10;
+
+        int profitPrice = knapSack(items, capacity, 0); //0 is the index from which we are starting.
+        System.out.println("Final profit price : " + profitPrice);
+    }
+
+    private static int knapSack(Item[] items, int capacity, int index) {
+
+        //base condition (if no items left or the bag is full then return 0.
+        if((index == (items.length)) || capacity == 0) return 0;
+
+        //declare 2 variables for getting profit for including and excluding an item
+        int incl = 0;
+        int excl = 0;
+
+        //If weight of the current item is less than or equal to the capacity, then include it and recursively do the same for next items.
+        if(items[index].weight <= capacity) {
+            int newCapacity = capacity - items[index].weight;   //after including capacity will decrease
+            incl = items[index].price + knapSack(items, newCapacity, index+1);  //remember not to change the original index variable by doing "index++"
+        }
+
+        //Now calculate the profit price if we exclude the current item.
+        excl = knapSack(items, capacity, index+1); //remember not to change the original index variable by doing "index++"
+
+        //now check which choice gives us the best profit.
+        int result = Math.max(incl, excl);
+
+        return result;
+    }
+}
