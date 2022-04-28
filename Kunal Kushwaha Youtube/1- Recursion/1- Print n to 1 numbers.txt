@@ -1,0 +1,21 @@
+package com.kamble.demo;
+
+/*
+    Problem
+        Print n to 1 numbers
+ */
+
+public class Main {
+    public static void main(String[] args) {
+
+        print(5);
+    }
+
+    private static void print(int n) {
+
+        if(n == 0) return;
+
+        System.out.println(n);
+        print(n-1);	//do the same for lesser number
+    }
+}

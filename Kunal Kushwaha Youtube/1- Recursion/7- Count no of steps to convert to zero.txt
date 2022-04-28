@@ -1,0 +1,37 @@
+package com.kamble.demo;
+
+public class Main {
+    public static void main(String[] args) {
+
+        /*
+            Count no of steps to convert given value to zero
+
+            if no is even divide it by 2
+            if no is odd subtract 1
+
+
+            Solution
+                1. When we reach zero we would have our answer ready, so just return that answer
+                2. If we have not yet reached 0, then add to the counter and call again for smaller number
+                3. Can also use static variable instead of counter in function argument
+         */
+
+        int n = 4;
+        System.out.println(count(14));
+    }
+
+    private static int count(int n) {
+
+        return _count(n, 0);
+    }
+
+    private static int _count(int n, int counter) {
+
+        if(n == 0) return counter;
+
+        //if even no
+        if(n%2 == 0) return _count(n/2, counter +1);
+
+        return _count(n-1, counter+1);
+    }
+}

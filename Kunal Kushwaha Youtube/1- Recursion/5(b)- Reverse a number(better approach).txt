@@ -1,0 +1,47 @@
+package com.kamble.demo;
+
+/*
+    Problem
+       Reverse a number
+
+    Recurence relation
+        1. f(n) = [(n%10) * 10^k] + f(n/10) where k=1,2,3,4....
+        2. So the trick in this question is how will you find out k ?
+        3. There are many ways, but the easiest is to keep track of it as a static variable.
+
+
+*/
+
+public class Main {
+
+    private static int k = 0;
+
+    public static void main(String[] args) {
+
+        System.out.println(reverse(123));
+    }
+
+    private static int reverse(int n) {
+
+        //if its the first digit return the digit as it is.
+        if((n/10) == 0) {
+
+            k++;
+            return n;
+        }
+
+        //take the last digit from the number
+        int lastDigit = n%10;
+
+        //solve the sub problem.
+        int sub = reverse(n/10);
+
+        //Recurence relation -> f(n) = [(n%10) * 10^k] + f(n/10) where k=1,2,3,4....
+        int pow = (int)Math.pow(10, k);
+
+        int result = (lastDigit * pow) + sub;
+
+        k++;
+        return result;
+    }
+}

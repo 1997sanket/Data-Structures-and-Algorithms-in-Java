@@ -1,0 +1,39 @@
+package com.kamble.demo;
+
+/*
+    Problem
+       Reverse a number
+
+    Recurence relation
+        1. f(n) = f(n/10) + [(n%10) * 10^k] where k=1,2,3,4....
+        2. So the trick in this question is how will you find out k ?
+        3. There are many ways, but the easiest is to keep track of it as a static variable.
+
+
+*/
+
+public class Main {
+
+    private static int k = 0;
+
+    public static void main(String[] args) {
+
+        int n = 123;
+        int x= reverse(n);
+
+        if(x == n) System.out.println("Palindrome");
+
+        else System.out.println("Not palindrome");
+    }
+
+    private static int reverse(int n) {
+
+        //if its the first digit return the digit as it is.
+        if((n/10) == 0) {
+            k++;
+            return n;
+        }
+
+        return reverse(n/10) +  ((n%10) * (int)(Math.pow(10,k++))) ;
+    }
+}

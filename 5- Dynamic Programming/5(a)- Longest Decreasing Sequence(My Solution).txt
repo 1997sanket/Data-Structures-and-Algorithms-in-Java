@@ -1,0 +1,46 @@
+package com.kamble.demo;
+
+/*
+    Did this on my own :)))))
+    Took me almost 2 days.
+
+    My approach
+        1. Figure out the simplest possible input.
+        2. Analyze how the simplest cases can be used to solve the bigger cases. Like how the sub-problems can be used to solve main problems.
+        3. Take array of 1 element first, then 2 elements, then three and consider all scenarios.
+        4. Here I'm going backwards, taking last index element first. So the base would be for index=0.
+            So basically I'm calculating DFS(index=0) first, then using this result I'm calculating for DFS(index=1), and so on.
+ */
+
+public class Main {
+    public static void main(String[] args) {
+        int[] arr = {20, 8, 12, 16, 10, 9, 18, 7};
+        System.out.println(LDS(arr, arr.length-1)); //passing last index
+    }
+
+    private static int LDS(int[] arr, int n) {
+
+        //(Base case) If there is only 1 number in array, then the LDS is 1.
+        if(n==0) return 1;
+        if(n<0) return 0;   //If the user passes array of 0 length
+
+        //this will store the length of LDS.
+        int result = 0;
+
+            int subResult = LDS(arr, n-1);  //find result of the sub-problem
+
+            //if the previous element is > than this element, then add 1 to its result.
+            if(arr[n-1] > arr[n]) {
+                //Only store the result of sub-problem, if it is greater than the main problem.
+                if ((subResult + 1) > result) {
+                    result = subResult + 1; //Using result of sub-problem, construct result of main problem.
+                }
+            }
+            //(consider only 2 elements)If the previous element is not Greater than this element.
+            else {
+                result = subResult;
+            }
+
+        return result;
+    }
+}

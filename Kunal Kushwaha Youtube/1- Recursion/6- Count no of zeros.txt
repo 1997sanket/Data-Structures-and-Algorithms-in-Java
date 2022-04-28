@@ -1,0 +1,29 @@
+package com.kamble.demo;
+
+public class Main {
+    public static void main(String[] args) {
+
+        /*
+            Count no of zeros
+         */
+
+        int n = 30204;
+        System.out.println(countZeros(n));
+    }
+
+    private static int countZeros(int n) {
+
+        //before 1st element
+        if(n==0) return 0;
+
+        int lastDigit = n%10;
+
+        int sub = countZeros(n/10);
+
+        if(lastDigit == 0) {
+            return sub+1;
+        } else {
+            return sub;
+        }
+    }
+}

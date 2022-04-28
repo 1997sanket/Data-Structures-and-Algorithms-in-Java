@@ -1,0 +1,27 @@
+package com.kamble.demo;
+
+/*
+    Problem
+        Sum of digits
+
+    ALgo
+        Try to find the sub-problem
+        Using solution for sub-problem, construct sol for main problem
+        Find the base case.
+*/
+
+public class Main {
+    public static void main(String[] args) {
+
+        System.out.println(sumOfDigits(1234));
+    }
+
+    private static int sumOfDigits(int n) {
+
+        if(n==0) return 0;
+
+        int lastDigit = n%10;
+
+        return lastDigit + sumOfDigits(n/10);
+    }
+}

@@ -1,0 +1,73 @@
+package com.kamble.demo;
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+    Problem
+        1. There are infinite number of coins for the given denominations.
+        2. Find the minimum no of coins using which the total can match the given amount.
+
+    Algo
+        Whenever you come across problems which have multiple levels of recursion,
+        take input in such a way, that there is only 1 level of recursive calls.
+        For eg: In this problem, if we take denominations as [1,2,3] and amount = 1.
+
+        Diagram
+                                    f(coins, 1, 0) = 0 + 1
+
+    f(coins, 0, 0)  (won't be calculated for i=1, returns MAX value)  (won't be calculated for i=2, returns MAX value)
+
+
+
+
+    This problem is like Fibonacci and Stairs problem on steroids.
+
+
+    Memoization
+        Here instead of using a 2D array, which will take a lot of space (also, I'm not exactly sure whether it's a correct approach)
+        We can take a Map, where amount will be key and minimum no of coins to make up that amount will be value.
+ */
+
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] coins = {1, 3, 5, 2};
+        int amount = 7;
+
+        Map<Integer, Integer> memo = new HashMap<>();
+        int minNoOfCoins = coinChange(coins, amount, memo);
+        System.out.println("Min no of coins from the given denominations to get the amount : " + minNoOfCoins);
+
+        System.out.println("Final Memo map : " + memo);
+
+    }
+
+    private static int coinChange(int[] coins, int amount, Map<Integer, Integer> memo) {
+
+        //if amount is completed.
+        if(amount == 0) return 0;
+
+        //IF value is available in the memo then return it.
+        if(memo.containsKey(amount)) {
+            return memo.get(amount);
+        }
+
+        int result = Integer.MAX_VALUE; //Initially we consider total No of coins to be Maximum allowed in java.
+        for(int i=0; i<coins.length; i++) {
+
+            if(coins[i] <= amount) {
+                int subResult = coinChange(coins, (amount - coins[i]), memo);
+
+                //Consider the sub result only if it is less than the current result.
+                if((subResult+1) < result) {
+                    result = subResult + 1; //Adding 1 to consider the current denomination, because we are returning 0 at base condition.
+                }
+            }
+        }
+
+        memo.put(amount, result); //Memoizing.
+        return result;
+
+    }
+}
