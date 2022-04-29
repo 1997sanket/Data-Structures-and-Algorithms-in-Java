@@ -1,0 +1,30 @@
+package com.kamble.demo;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] arr = {1, 0, 2, 3, 4, 5};
+
+        System.out.println(isSorted(arr));
+    }
+
+    private static boolean isSorted(int[] arr) {
+        return _isSorted(arr, arr.length-1);
+    }
+
+    private static boolean _isSorted(int[] arr, int n) {
+
+        //if only 1 element in array, it is sorted so return true.
+        if(n==0) return true;
+
+        boolean sub = _isSorted(arr, n-1);
+
+        //if the smaller array is sorted
+        if(sub == true) {
+
+            //then check for this array
+            if (arr[n] >= arr[n - 1]) return true;
+        }
+
+        return false;
+    }
+}

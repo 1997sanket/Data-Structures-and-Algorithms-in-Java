@@ -1,0 +1,50 @@
+package com.kamble.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    /*
+        find multiple occurences of a number.
+
+        Here the user will not send the list in argument. So we have 2 options, either create a static List in Main class
+            OR create new List in each function call.
+
+        For learning purpose we will create new List in every call.
+     */
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 2, 4};
+
+        System.out.println("Found at indexes: " + linearSearch(arr, 2));
+    }
+
+    private static List<Integer> linearSearch(int[] arr, int x) {
+        return _linearSearch(arr, x, arr.length-1);    //going n-1 to 0
+    }
+
+    private static List<Integer> _linearSearch(int[] arr, int x, int n) {
+
+        //base condition
+        if(n==-1) return new ArrayList<>(); //Returning empty List
+
+        //Create new List for storing our data
+       List<Integer> list = new ArrayList<>();
+       if(arr[n] == x) list.add(n);
+
+       List<Integer> subList = _linearSearch(arr, x, n-1);
+
+       //if the main list is not empty, copy data from main list to sub list
+       if(!list.isEmpty()) {
+           for(int i : list) {
+               subList.add(i);
+           }
+       }
+
+       //return sublist, with data either copied or not copied from main list
+       return subList;
+    }
+
+
+}

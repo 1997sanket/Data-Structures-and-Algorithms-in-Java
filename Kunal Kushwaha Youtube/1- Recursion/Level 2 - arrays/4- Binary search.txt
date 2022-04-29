@@ -1,0 +1,37 @@
+package com.kamble.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};    //array should be sorted for binary search
+
+        System.out.println("Found at index: " + binarySearch(arr, 2));
+    }
+
+    private static int binarySearch(int[] arr, int target) {
+
+        return _binarySearch(arr,target, 0, arr.length-1);
+    }
+
+    private static int _binarySearch(int[] arr, int target, int s, int e) {
+
+        //base condition
+        if(s > e) return -1;
+
+        //mid index
+        int m = (s+e)/2;
+
+        //if middle is our element
+        if(target == arr[m]) return m;
+
+        //if target is < than middle element, then it is in the left array
+        if(target < arr[m]) return _binarySearch(arr, target, s, m-1);
+
+        //else it is in the right array
+        return _binarySearch(arr, target, m+1, e);
+    }
+
+}

@@ -1,0 +1,26 @@
+package com.kamble.demo;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3};
+
+        System.out.println("Found at index: " + linearSearch(arr, 2));
+    }
+
+    private static int linearSearch(int[] arr, int x) {
+        return _linearSearch(arr, x, arr.length-1);    //going n-1 to 0
+    }
+
+    private static int _linearSearch(int[] arr, int x, int n) {
+
+        //if n goes out of array
+        if(n==-1) return -1;
+
+        if(arr[n] == x) return n;
+
+        return _linearSearch(arr, x, n-1);
+    }
+
+
+}

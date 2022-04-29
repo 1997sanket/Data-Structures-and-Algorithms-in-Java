@@ -1,0 +1,28 @@
+package com.kamble.demo;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3};
+
+        System.out.println("Found at index: " + linearSearch(arr, 3));
+    }
+
+    private static int linearSearch(int[] arr, int x) {
+        return _linearSearch(arr, x, 0);    //going 0 to n-1
+    }
+
+    private static int _linearSearch(int[] arr, int x, int i) {
+
+        //if index is beyond the last element, we did not find hence return -1
+        if(i == arr.length) return -1;
+
+        //if the element is at the current index
+        if(arr[i] == x) return i;
+
+        //else search in the next index
+        return _linearSearch(arr, x, i+1);
+    }
+
+
+}

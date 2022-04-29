@@ -1,0 +1,36 @@
+package com.kamble.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    /*
+        find multiple occurences of a number.
+
+        Here the user will send the List in arguments
+     */
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 2, 4};
+
+        System.out.println("Found at indexes: " + linearSearch(arr, 2, new ArrayList<Integer>()));
+    }
+
+    private static List<Integer> linearSearch(int[] arr, int x, List<Integer> list) {
+        return _linearSearch(arr, x, arr.length-1, list);    //going n-1 to 0
+    }
+
+    private static List<Integer> _linearSearch(int[] arr, int x, int n, List<Integer> list) {
+
+        if(n==-1) return list;
+
+        if(arr[n] == x) {
+            list.add(n);
+        }
+
+        return _linearSearch(arr, x, n-1, list);
+    }
+
+
+}

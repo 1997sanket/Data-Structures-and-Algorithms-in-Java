@@ -1,0 +1,29 @@
+package com.kamble.demo;
+
+public class Main {
+    /*
+        In my solution I was going from n-1 to 0
+            Here I am going from 0 to n-1
+
+       SO we can choose either approach,
+        Here 0 to n-1 seems a better and more understanding approach.
+     */
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3};
+
+        System.out.println(isSorted(arr));
+    }
+
+    private static boolean isSorted(int[] arr) {
+        return _isSorted(arr, 0);
+    }
+
+    private static boolean _isSorted(int[] arr, int i) {
+
+        //if last element
+        if(i == arr.length-1) return true;
+
+        return (arr[i] <= arr[i+1]) && _isSorted(arr, i+1);
+    }
+}

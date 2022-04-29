@@ -1,0 +1,19 @@
+1. Analyze the base case.
+
+2. Try to find sub-problems and how they can help construct the main problem.
+
+3. You can either get a part of the solution from sub-problem then solve the main problem, (like fibonacci)
+	OR you can solve the current problem and send some data in the sub problem to solve that problem, so eventually when
+		base condition is reached, your problem will be solved. (like count steps to convert number to zero - Level 1)
+	OR	You can also use a variable outside the function, like a static variable, that can help you solve the problem.
+			(like reversing a number in Level 1).
+
+4. Local variables in recursion
+	- Argument (remember, the argument variables will also be passed to the recursive function)
+	- Return type (fairly simple, what you want to return to the user)
+	- body variables (variables that are only used by the current function call)
+
+5. You can also use helper functions in your code, these functions can have more arguments than what the user passed originally.
+
+6. If it's an array question, you can either traverse from 0 to (n-1) or (n-1) to 0. Check which traversal will yield better more
+	readable solution.
