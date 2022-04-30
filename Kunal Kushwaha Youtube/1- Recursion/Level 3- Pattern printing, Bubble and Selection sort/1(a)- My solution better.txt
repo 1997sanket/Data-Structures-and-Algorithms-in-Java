@@ -1,0 +1,38 @@
+package com.kamble.demo;
+
+public class Main {
+
+    /*
+                        ****
+                        ***
+                        **
+                        *
+
+           Algo
+            -In iterative version, we have 2 for loops, here for those we will have two variables.
+     */
+
+    public static void main(String[] args) {
+        pattern(4);
+    }
+
+
+    private static void pattern(int n) {
+        _pattern(n,n);
+    }
+
+    private static void _pattern(int row, int col) {
+
+        //Code to traverse column wise and print.
+        if(col == 0) return;
+        System.out.print("*");
+        _pattern(row,col-1);
+
+        //After printing all the columns, we need to come to the first value of row, and that will happen when col == row
+        if(row == col) {
+            System.out.println();   //go to next line
+            _pattern(row-1, col-1); //and repeat for 1 value less
+        }
+    }
+
+}

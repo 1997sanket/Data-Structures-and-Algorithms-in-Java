@@ -1,0 +1,40 @@
+package com.kamble.demo;
+
+public class Main {
+
+    /*
+                        *
+                        **
+                        ***
+                        ****
+
+           Algo
+			- We need to separate variables for row and col recursive calls and a length variable to keep track of row.
+			- You cant do everything with just row and col variables.
+     */
+
+    public static void main(String[] args) {
+        pattern(3);
+    }
+
+
+    private static void pattern(int n) {
+        _pattern(1,1, n);   //sending original length to keep track of row iterations
+    }
+
+    private static void _pattern(int row, int col, int length) {
+
+        if(row == length+1) return; //row base case
+
+
+        if(col>row) return; //col base case
+        System.out.print("*");
+        _pattern(row, col+1, length);
+        
+        if(col == row) {
+            System.out.println();
+            _pattern(row+1, 1, length);
+        }
+
+    }
+}

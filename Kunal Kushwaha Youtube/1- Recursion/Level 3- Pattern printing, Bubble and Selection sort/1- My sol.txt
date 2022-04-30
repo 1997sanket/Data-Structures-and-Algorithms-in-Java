@@ -1,0 +1,40 @@
+package com.kamble.demo;
+
+public class Main {
+
+    /*
+                        ****
+                        ***
+                        **
+                        *
+
+           Algo
+            -We need to have two separate recursive functions for row and column wise iteration.
+     */
+
+    public static void main(String[] args) {
+        pattern(3);
+    }
+
+    //For row wise iteration.
+    private static void pattern(int n) {
+
+        if(n==0) return;
+
+        display(n);
+        System.out.println(); //for next line
+        pattern(n-1);   //do the same for n-1 elements.
+    }
+
+    //to display the pattern (column wise iteration)
+    private static void display(int n) {
+
+        if (n == 0) return;
+
+        System.out.print("*");
+        display(n - 1);
+
+    }
+
+
+}

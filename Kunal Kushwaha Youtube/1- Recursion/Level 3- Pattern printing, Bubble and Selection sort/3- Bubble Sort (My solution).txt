@@ -1,0 +1,47 @@
+package com.kamble;
+
+import java.util.Arrays;
+
+/*
+    Since bubble sort has 2 loops, one for with complexity n^2.
+    We will have two variables for iterations. Call it r and c.
+    c loop will run entirely, each time for r.
+ */
+
+public class Main {
+    public static void main(String[] args) {
+
+        int[] arr = {2, 4, 1, 3};
+        bubbleSort(arr);
+        System.out.println("Sorted array : " + Arrays.toString(arr));
+    }
+
+    private static void bubbleSort(int[] arr) {
+        _bubbleSort(arr, arr.length-1, 0);
+    }
+
+    private static void _bubbleSort(int[] arr, int r, int c) {
+
+        //base condition for row recursive calls
+        if(r==0) return;
+
+        //base condition for column recursive calls
+        if(c==r) return;
+
+        if(arr[c] > arr[c+1]) {
+            swap(arr, c, c+1);
+        }
+        _bubbleSort(arr, r, c+1);   //do the same for next
+
+        if(c==0) //when returned to initial condition
+        {
+            _bubbleSort(arr, r-1, 0);   //c is 0, because for each iteration of r, has to start from 0.
+        }
+    }
+
+    private static void swap(int[] arr, int x, int y) {
+        int temp = arr[x];
+        arr[x] = arr[y];
+        arr[y] = temp;
+    }
+}
