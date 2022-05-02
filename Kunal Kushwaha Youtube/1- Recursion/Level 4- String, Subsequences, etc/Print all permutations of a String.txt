@@ -3,6 +3,25 @@ package com.kamble;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Algorithm
+
+    1. If you want to find permutations of "abc", first find permutations of "bc",
+        if you want to find permutations of "bc", first find permutations of "c",
+        if you want to find permutations of "c", first find permutations of "";
+
+    2. Once you have found permutations of lets say "bc", which are ["bc", "cb"]
+          then you to traverse the list, get one String("bc"), then add "a", first before 0th index("abc"), and add the result to a new list,
+           then add "a" after the 0th index("bac"), then add the result to the list, and then add "a" after the 1st index("bca") and add that to the list.
+           and SIMILARLY, do the same for "cb".
+
+    3. After processing both the elements from the sublist, you will have a new list ["abc", "bac", "bca", "acb", "cab", "cba"] and this is your final result.
+
+
+    Note: do check the logic of adding a character at all this different positions, using substring method.
+
+ */
+
 public class Main {
     public static void main(String[] args) {
         String s = "abc";
