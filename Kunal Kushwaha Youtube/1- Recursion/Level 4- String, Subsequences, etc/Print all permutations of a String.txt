@@ -1,0 +1,43 @@
+package com.kamble;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        String s = "abc";
+        System.out.println(permutations(s));
+    }
+
+    //Returns a list of all permutations of the string. Formula => (str.length)! = 6 here
+    private static List<String> permutations(String str) {
+
+        //This list will store our result
+        List<String> list = new ArrayList<>();
+
+        //if the string becomes empty, just add "" and return the list
+        if(str.isEmpty()) {
+            list.add("");
+            return list;
+        }
+
+        //this will get subresult e.g: [bc, cb]
+        List<String> subList = permutations(str.substring(1));
+
+        char ch = str.charAt(0);    //first character from the current string (a)
+
+        //traverse the sublist
+        for(String s : subList) {
+
+            //from the first string eg: "bc", add "a" before 0th index, then after 0th index, then after 1th index.
+            for(int i=0; i<=s.length(); i++) {
+                String f = s.substring(0,i);    //for i =0, this will return empty string
+                String l = s.substring(i);  // this will return the string from ith index to the last index
+                String result = f + ch + l; // We will add our character here.
+                list.add(result);   //now add it in the main list   (for String "bc", main list will be -> ["abc", "bac", "bca"])
+            }
+        }
+
+        return list;    // return the main list
+    }
+}
