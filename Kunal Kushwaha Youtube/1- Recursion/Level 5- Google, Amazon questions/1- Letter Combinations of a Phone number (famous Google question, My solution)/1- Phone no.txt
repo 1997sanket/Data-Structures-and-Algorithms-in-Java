@@ -1,0 +1,78 @@
+package com.kamble;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/*
+    Problem
+        Letter Combinations of a Phone number
+
+    Algo
+        Each number has a corresponding string, so we put that data in HashMap.
+        For each character of a string, we will put that character in a main-ist.
+        Now we will do the same thing for the next number in the input string, and get the sub list using recursion.
+        Now for we will combine each value of mainList with the subList and put that data in a newList(result)
+        And finally return that result.
+        If we are done with the input String, we will just return an empty List. (base condition)
+ */
+
+public class Main {
+    public static void main(String[] args) {
+        String str = "";
+        //System.out.println(str.substring(1));
+        System.out.println(letterCombinations(str));
+    }
+
+    private static List<String> letterCombinations(String str) {
+
+        Map<Integer, String> map = new HashMap<>();
+        map.put(2, "abc");
+        map.put(3, "def");
+        map.put(4, "ghi");
+        map.put(5, "jkl");
+        map.put(6, "mno");
+        map.put(7, "pqrs");
+        map.put(8, "tuv");
+        map.put(9, "wxyz");
+
+        return _func(str,map);
+    }
+
+    private static List<String> _func(String str, Map<Integer, String> map) {
+
+        List<String> mainList = new ArrayList<>();
+
+        //base condition
+        if(str.isEmpty()) {
+            return mainList;
+        }
+
+        int number = Integer.parseInt(str.substring(0,1));  //get first number
+        String s = map.get(number); //get respective string for the number
+
+        //add each character of s to the mainList ["a", "b", "c"]
+        for(int i=0; i<s.length(); i++) {
+            mainList.add(Character.toString(s.charAt(i)));
+        }
+
+        //Get result for subList(do the same thing for the next number)
+        List<String> subList = _func(str.substring(1), map);
+
+        //Now pair every combination of mainList with subList
+        List<String> result = new ArrayList<>();
+
+        if(subList.isEmpty()) {
+            return mainList;
+        } else {
+            for(String s1 : mainList) {
+                for(String s2: subList) {
+                    result.add(s1+s2);
+                }
+            }
+            return result;
+        }
+
+    }
+}

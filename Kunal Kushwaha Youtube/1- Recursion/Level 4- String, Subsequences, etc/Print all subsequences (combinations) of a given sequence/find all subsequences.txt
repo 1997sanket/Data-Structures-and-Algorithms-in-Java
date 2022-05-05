@@ -1,0 +1,69 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+    This is using Kunal's approach.
+
+    This approach has two recursion calls in each level, so not as optimal but the pattern is VVVI
+
+    Algo
+        1. Include the first character and exclude it, either way go to next character
+        2. Do this till the given string is empty, simultaneously keep storing data in the answer string.
+
+    Here we can also create an ArrayList in the main and send it to the function, which will store our subsets.
+    This will save a lot of memory. But for learning purpose I am creating array list in the function body.
+ */
+
+public class Main {
+    public static void main(String[] args) {
+
+        //subSeq("","abc");
+        System.out.println("Returning ArrayList : " + subSeqRetList("", "abc"));
+    }
+
+    private static List<String> subSeqRetList(String ans, String given) {
+
+        //base condition (when given string becomes empty)
+        if(given.isEmpty()){
+            //whenever given string becomes empty, one subsequence is ready
+            List<String> list = new ArrayList<>();
+
+            //can add edge cases here, if we don't want to add empty string
+            if(ans.isEmpty()) {
+                return list;
+            } else {
+                list.add(ans);
+                return list;
+            }
+        }
+
+        char firstChar = given.charAt(0);
+        //include first character
+        List<String> left = subSeqRetList(ans+firstChar, given.substring(1));
+
+        //exclude first character
+        List<String> right = subSeqRetList(ans, given.substring(1));
+
+        //add all data of right to left list
+        left.addAll(right);
+
+        //return the consolidated data
+        return left;
+    }
+
+    private static void subSeq(String ans, String given) {
+
+        //base condition (when given string becomes empty)
+        if(given.isEmpty()){
+            System.out.println(ans);    //whenever given string becomes empty, one subsequence is ready
+            return;
+        }
+
+        char firstChar = given.charAt(0);
+        //include first character
+        subSeq(ans+firstChar, given.substring(1));
+
+        //exclude first character
+        subSeq(ans, given.substring(1));
+    }
+}

@@ -1,0 +1,108 @@
+/*
+    Skip a character in a String (Kunal's approach)
+
+    VVVI: Do not overlook this problem just because it is easy. It teaches key concepts of recursion and how to approach
+            recursion problems. Kunal's approach is very important as it follows a specific pattern, which is also used
+            in complex problems.
+
+    Approaches:
+        Traversals: You can either travel from n-1 to 0 OR 0 to n-1. Kunal does 0 to n-1 in this problem
+
+        Approach:
+            1. My approach (solves the problem, but not good)
+                    -check the current character, if equal to target, remove it from the string.
+                    -do the same for next character in the string.
+
+            2. Kunal's approach
+                A)
+                    -send the answer String along with the given String in the function call, so at the end our answer String will
+                     contain, final answer. Kunal calls answer string as "processed" and given string as "unprocessed".
+                B)
+                    -Only send the given string in function call, answer will be "currentCharacter + func(str.subString(1))"
+                     depending whether the current character is our target character
+
+ */
+
+public class Main {
+    public static void main(String[] args) {
+
+        String str = "baccad";
+
+        System.out.println("Skip character approach 1 : " + skipCharApproach1("", str, 'a'));
+        System.out.println("Skip character approach 2 : " + skipCharApproach2(str, 'a'));
+        System.out.println("Skip a String : " + skipApple("bacapplecd"));
+        System.out.println("Skip a app only when the bigger substring is not apple: " + skipAppOnlyWhenItIsNotApple("bacapplecdahappasa"));
+    }
+
+    private static String skipCharApproach1(String ans, String given, char target) {
+
+        //if given String is empty, then we have our answer
+        if(given.isEmpty()) {
+            return ans;
+        }
+
+        char ch = given.charAt(0);
+        //If first character is same as the target, then nothing will go in answer String, and do the same to next char
+        if(ch == target) {
+            return skipCharApproach1(ans, given.substring(1), target);
+        }
+        //Else add that character in the answer String
+        else {
+            return skipCharApproach1(ans + ch, given.substring(1), target);
+        }
+    }
+
+
+    private static String skipCharApproach2(String given, char target) {
+
+        //base condition
+        if(given.isEmpty()) {
+            return "";
+        }
+
+        //take the first character
+        char ch = given.charAt(0);
+
+        //If first character is the target character, then skip this character
+        if(ch == target) {
+            return skipCharApproach2(given.substring(1), target);
+        }
+        //Else, return current char + (do the same for next)
+        else {
+            return ch + skipCharApproach2(given.substring(1), target);  //if we were traversing backwards, then "return func() + ch" (common sense)
+        }
+    }
+
+
+    private static String skipApple(String given) {
+
+        //base condition
+        if(given.isEmpty()) {
+            return "";
+        }
+
+        if(given.startsWith("apple")) {
+            return skipApple(given.substring(5));
+        }
+        else {
+            return given.charAt(0) + skipApple(given.substring(1));
+        }
+    }
+
+    private static String skipAppOnlyWhenItIsNotApple(String given) {
+
+        //base condition
+        if(given.isEmpty()) {
+            return "";
+        }
+
+        //if it stars with app but not with apple
+        if(given.startsWith("app") && !given.startsWith("apple")) {
+            return skipAppOnlyWhenItIsNotApple(given.substring(3));
+        }
+        else {
+            return given.charAt(0) + skipAppOnlyWhenItIsNotApple(given.substring(1));
+        }
+    }
+
+}
