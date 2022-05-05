@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        String str = "abc";
+        System.out.println(subSeqItr(str));
+    }
+
+    private static List<String> subSeqItr(String str) {
+
+        //Create a List containing 1 empty string [""]
+        List<String> outer = new ArrayList<>();
+        outer.add("");
+
+        int n = str.length();
+
+        //traverse the given string
+        for (int i = 0; i < n; i++) {
+
+            List<String> inner = new ArrayList<>();
+
+            //inner list will contain copy of outer
+            inner.addAll(outer);    //[""]
+
+            //keep the inner list plus concat current character to all the elements of the inner list -> ["", "a"]
+            for(String s : outer) {
+                inner.add(s + str.charAt(i));
+            }
+
+            //now outer list will contain the answer uptill current character.
+            outer = inner;
+        }
+
+        return outer;
+    }
+}
