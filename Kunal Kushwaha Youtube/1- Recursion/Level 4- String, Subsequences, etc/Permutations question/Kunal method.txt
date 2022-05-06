@@ -1,0 +1,82 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        String str = "abc";
+       // permutations("", str);
+       // System.out.println(permutationsRetList("", str)); // remember we can always have a static level ArrayList to store our data
+        System.out.println(permutationsCount("", str)); // remember we can always have a static level counter to count
+    }
+
+    private static void permutations(String ans, String given) {
+
+        //base condition
+        if(given.isEmpty()) {
+            System.out.println(ans);
+            return;
+        }
+
+        int noOfPositionsToPlaceCurrentChar = ans.length() + 1;
+        char firstChar = given.charAt(0);
+
+        //FOr initial empty string, there will be only 1 position to place the first char of the given string
+        for(int i=0; i<noOfPositionsToPlaceCurrentChar; i++) {
+            String left = ans.substring(0,i);  //note: i is not inclusive here.
+            String right= ans.substring(i);
+
+            permutations(left+firstChar+right, given.substring(1));
+        }
+    }
+
+    private static List<String> permutationsRetList(String ans, String given) {
+
+        List<String> list = new ArrayList<>();  //contains all our answers
+
+        //base condition
+        if(given.isEmpty()) {
+            list.add(ans);
+            return list;
+        }
+
+        int noOfPositionsToPlaceCurrentChar = ans.length() + 1;
+        char firstChar = given.charAt(0);
+
+        //FOr initial empty string, there will be only 1 position to place the first char of the given string
+        for(int i=0; i<noOfPositionsToPlaceCurrentChar; i++) {
+            String left = ans.substring(0,i);  //note: i is not inclusive here.
+            String right= ans.substring(i);
+
+            List<String> subList = permutationsRetList(left+firstChar+right, given.substring(1));
+            list.addAll(subList);
+        }
+
+        return list;
+    }
+
+    private static int permutationsCount(String ans, String given) {
+
+        int count = 0;
+
+        //base condition
+        if(given.isEmpty()) {
+            count++;
+            return count;
+        }
+
+        int noOfPositionsToPlaceCurrentChar = ans.length() + 1;
+        char firstChar = given.charAt(0);
+
+        //FOr initial empty string, there will be only 1 position to place the first char of the given string
+        for(int i=0; i<noOfPositionsToPlaceCurrentChar; i++) {
+            String left = ans.substring(0,i);  //note: i is not inclusive here.
+            String right= ans.substring(i);
+
+            int subCount = permutationsCount(left+firstChar+right, given.substring(1));
+            count = count + subCount;
+        }
+
+        return count;
+    }
+
+}
