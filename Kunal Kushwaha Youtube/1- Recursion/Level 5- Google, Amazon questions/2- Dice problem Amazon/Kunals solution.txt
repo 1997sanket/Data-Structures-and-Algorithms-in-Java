@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+//        diceProblem("", 3);
+        System.out.println(diceProblemList("", 3));
+    }
+
+    private static List<String> diceProblemList(String ans, int target) {
+
+        List<String> list = new ArrayList<>();
+
+        if(target == 0) {
+            list.add(ans);
+            return list;
+        }
+
+        for(int i=1; i<=6; i++) {
+            //Only call the recursion, if the element you are taking is <= the target
+            if(i<=target) {
+                List<String> subList = diceProblemList(ans + i, target-i);   //We are keeping track whether we found the answer or not by decreasing target.
+                list.addAll(subList);
+            }
+        }
+
+        return list;
+    }
+
+    private static void diceProblem(String s, int target) {
+
+        if(target == 0) {
+            System.out.println(s);
+            return;
+        }
+
+        for(int i=1; i<=6; i++) {
+            //Only call the recursion, if the element you are taking is <= the target
+            if(i<=target) {
+                diceProblem(s + i, target-i);   //We are keeping track whether we found the answer or not by decreasing target.
+            }
+        }
+    }
+}
