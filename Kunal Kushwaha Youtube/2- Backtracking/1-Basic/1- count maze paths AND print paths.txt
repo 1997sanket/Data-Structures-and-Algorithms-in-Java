@@ -1,0 +1,65 @@
+public class Main {
+
+    /*
+        Not backtracking, just maze traversal questions
+    */
+    public static void main(String[] args) {
+        System.out.println("no of paths : " + countMazePaths(3,3));
+        System.out.println("no of paths little optimized : " + countMazePathsOpt(3,3));
+        System.out.println("no of paths include diagonal traversal: " + countMazePathsDiagonal(3,3));
+        System.out.println("printing all paths");
+        printMazePaths("", 3,3);
+
+    }
+
+    private static int countMazePathsDiagonal(int r, int c) {
+
+        if(r == 1 || c == 1) return 1;
+
+        return countMazePathsDiagonal(r-1, c) + countMazePathsDiagonal(r, c-1) + countMazePathsDiagonal(r-1, c-1);
+    }
+
+    //Very similar to Processed Unprocessed subsequences question
+    private static void printMazePaths(String ans, int r, int c) {
+
+        if(isSafe(r,c)) {
+
+            if(r==1 && c==1) {
+                System.out.println(ans);
+            }
+
+            printMazePaths(ans + "D", r-1, c);
+            printMazePaths(ans + "R", r, c-1);
+
+            //Note: instead of D and R we can also print the path using r and c.
+
+        }
+    }
+
+    private static int countMazePathsOpt(int r, int c) {
+
+        //Once we have reached the last row or the last column, then there is only 1 way right or down. So just return from there
+        if(r==1 || c==1) return 1;
+
+        return countMazePathsOpt(r-1, c) + countMazePathsOpt(r, c-1);
+    }
+
+    private static int countMazePaths(int r, int c) {
+
+        if (isSafe(r, c)) {
+            if (r == 1 && c == 1) return 1;
+
+            int down = countMazePaths(r -1, c);
+            int right = countMazePaths(r, c -1);
+
+            return down + right;
+        }
+        return 0;
+    }
+
+    //checks where row and col is within the matrix boundaries
+    private static boolean isSafe(int r, int c) {
+        return (r>=1 && c>=1);
+    }
+
+}

@@ -1,0 +1,36 @@
+public class Main {
+    public static void main(String[] args) {
+
+        //maze[1,1] = river, cant go there.
+        int [][] maze = {
+                {1,1,1},
+                {1,0,1},
+                {1,1,1}
+        };
+
+        mazeObstacles(maze, "", 0, 0, maze.length-1);
+    }
+
+
+    //Same as processed unprocessed in string subsequences problem (can also return an arraylist of paths)
+    private static void mazeObstacles(int[][] maze, String ans, int r, int c, int mazeLastIndex) {
+
+        //only visit the current cell if its safe
+        if(isSafe(maze, r, c, mazeLastIndex)) {
+
+            if(r==mazeLastIndex  && c== mazeLastIndex){
+                System.out.println(ans);
+                return;
+            }
+
+            mazeObstacles(maze, ans+ 'D', r+1, c, mazeLastIndex);
+            mazeObstacles(maze, ans + 'R', r, c+1, mazeLastIndex);
+        }
+    }
+
+    private static boolean isSafe(int[][] maze, int r, int c, int mazeLastIndex) {
+
+        //added one more condition for blockage
+        return (r<=mazeLastIndex && c<=mazeLastIndex && maze[r][c]!=0);
+    }
+}

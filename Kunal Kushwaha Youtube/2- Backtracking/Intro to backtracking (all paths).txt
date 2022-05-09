@@ -1,0 +1,144 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+
+        //maze[1,1] = river, cant go there.
+        boolean [][] maze = {
+                {false, false, false},
+                {false, false, false},
+                {false, false, false}
+        };
+
+        int[][] ans = new int[maze.length][maze[0].length];
+
+        //allPaths(maze, "", 0, 0, maze.length-1);
+        //System.out.println(allPathsList(maze, "", 0, 0, maze.length-1));
+        System.out.println("Printing the paths in matrix");
+        printMatrixAndPaths(maze,0, 0, maze.length-1, 1, ans);
+    }
+
+    private static void printMatrixAndPaths(boolean[][] maze, int r, int c, int lastIndex, int counter, int [][] ans) {
+
+        //do all this only if it is safe to visit the cell
+        if(isSafe(maze, r, c, lastIndex)) {
+
+            //if reached destination print the path
+            if(r==lastIndex && c==lastIndex) {
+                maze[r][c] = true;  //mark the cell as visited (for convention)
+                ans[r][c] = counter;
+
+                //print the answer matrix till now
+                for(int i=0; i< ans.length; i++) {
+                    for(int j=0; j<ans[i].length; j++) {
+                        System.out.print(" "+ ans[i][j] + " ");
+                    }
+                    System.out.println();
+                }
+
+                System.out.println();
+
+                maze[r][c] = false; //make the cell as unvisited as you are returning (for convention)
+                ans[r][c] = 0;
+
+                return;
+            }
+
+            //first mark the cell true(visited)
+            maze[r][c] = true;
+            ans[r][c] = counter;
+
+            printMatrixAndPaths(maze, r+1, c, lastIndex, counter+1, ans);   //go down
+            printMatrixAndPaths(maze, r, c+1, lastIndex, counter+1, ans);   //go right
+            printMatrixAndPaths(maze, r-1, c, lastIndex, counter+1, ans);   //go up
+            printMatrixAndPaths(maze,  r, c-1, lastIndex, counter+1, ans);   //go left
+
+            //when all paths covered get the cell in its original value(unvisited)
+            maze[r][c] = false;
+            ans[r][c] = 0;
+        }
+
+
+    }
+
+    private static void allPaths(boolean[][] maze, String ans, int r, int c, int lastIndex) {
+
+        //do all this only if it is safe to visit the cell
+        if(isSafe(maze, r, c, lastIndex)) {
+
+            //if reached destination print the path
+            if(r==lastIndex && c==lastIndex) {
+                maze[r][c] = true;  //mark the cell as visited (for convention)
+                System.out.println(ans);
+                maze[r][c] = false; //make the cell as unvisited as you are returning (for convention)
+                return;
+            }
+
+            //first mark the cell true(visited)
+            maze[r][c] = true;
+
+            allPaths(maze, ans + 'D', r+1, c, lastIndex);   //go down
+            allPaths(maze, ans + 'R', r, c+1, lastIndex);   //go right
+            allPaths(maze, ans + 'U', r-1, c, lastIndex);   //go up
+            allPaths(maze, ans + 'L', r, c-1, lastIndex);   //go left
+
+            //when all paths covered get the cell in its original value(unvisited)
+            maze[r][c] = false;
+
+        }
+
+
+    }
+
+
+    private static List<String> allPathsList(boolean[][] maze, String ans, int r, int c, int lastIndex) {
+
+        //to store our paths
+        List<String> main = new ArrayList<>();
+
+        //do all this only if it is safe to visit the cell
+        if(isSafe(maze, r, c, lastIndex)) {
+
+            //if reached destination print the path
+            if(r==lastIndex && c==lastIndex) {
+                maze[r][c] = true;  //mark the cell as visited (for convention)
+                main.add(ans);
+                maze[r][c] = false; //make the cell as unvisited as you are returning (for convention)
+                return main;
+            }
+
+            //first mark the cell true(visited)
+            maze[r][c] = true;
+
+            List<String> s1 = allPathsList(maze, ans + 'D', r+1, c, lastIndex);   //go down
+            List<String> s2 = allPathsList(maze, ans + 'R', r, c+1, lastIndex);   //go right
+            List<String> s3 = allPathsList(maze, ans + 'U', r-1, c, lastIndex);   //go up
+            List<String> s4 = allPathsList(maze, ans + 'L', r, c-1, lastIndex);   //go left
+
+            //add all the paths from sublist to the main list
+            main.addAll(s1);
+            main.addAll(s2);
+            main.addAll(s3);
+            main.addAll(s4);
+
+            //when all paths covered get the cell in its original value(unvisited)
+            maze[r][c] = false;
+
+        }
+
+        return main;
+
+    }
+
+
+    private static boolean isSafe(boolean[][] maze, int r, int c, int lastIndex) {
+
+        return (r<=lastIndex &&
+                r>=0 &&
+                c<=lastIndex &&
+                c>=0 &&
+                maze[r][c] != true
+        );
+    }
+}
