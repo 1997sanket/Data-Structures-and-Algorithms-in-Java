@@ -1,3 +1,8 @@
 1. Make a change, then revert the change. (before the function is returned).
 
-2. All this backtracking and related problems are very similar to the string subset "processed" "unprocessed" problems.
+2. All this backtracking and related problems are very similar to the string subsequences "processed" and "unprocessed" problems.
+
+3. You need to keep in mind that, when a function makes supposed four recursion calls, every recursion call will call the 
+	first one only, till the base condition is reached.
+	And eventually, when all the first calls are finished, the control will come back to the first-ever call, and from there
+	the second call will go, and so on.
