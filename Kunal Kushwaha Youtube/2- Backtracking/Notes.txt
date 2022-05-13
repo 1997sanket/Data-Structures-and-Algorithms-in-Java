@@ -6,3 +6,6 @@
 	first one only, till the base condition is reached.
 	And eventually, when all the first calls are finished, the control will come back to the first-ever call, and from there
 	the second call will go, and so on.
+
+4. Hint: When to use Backtracking ?
+	- When a choice can affect future answers, use BT.
