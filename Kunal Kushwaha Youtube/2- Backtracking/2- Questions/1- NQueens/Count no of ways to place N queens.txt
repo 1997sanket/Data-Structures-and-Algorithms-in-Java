@@ -1,0 +1,86 @@
+public class Main {
+    public static void main(String[] args) {
+        int[][] arr = {
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0},
+            {0,0,0,0}
+        };
+
+        System.out.println("No of ways to place the queens : " + nQueens(arr, 0, 0, arr.length-1));
+
+
+    }
+
+    private static int nQueens(int[][] arr, int r, int c, int lastIndex) {
+
+        int counter = 0;
+
+        //when r becomes n+1 (base condition)
+        if(r==lastIndex+1) {
+            //System.out.println("outside matrix");
+            return 1;
+        }
+
+        //for each row, check each column
+        for(int j = c; j<=lastIndex; j++) {
+
+            //is safe method will check whether the cell is within the matrix and there is no other queen hitting our queen
+            if(isSafe(arr, r, j, lastIndex)) {
+                arr[r][j] = 1;
+                int subCounter = nQueens(arr, r+1, 0, lastIndex);   //traversing row-wise
+
+                counter += subCounter;  //add sub result to main result
+
+                //backtracking move if result was false
+                arr[r][j] = 0;
+            }
+        }
+
+        //if for loop ended that means, no cell is safe
+        return counter;
+
+    }
+
+    private static boolean isSafe(int[][] arr, int r, int c, int lastIndex) {
+
+        //only have to check vertically upwards and diagonally upwards
+        int i = r;
+        int j = c;
+
+
+        //upwards
+        while(i>=0) {
+            if(arr[i][j] == 1) return false;
+
+            i--;
+        }
+
+        //resetting
+        i=r;
+        j=c;
+
+
+        //upwards-left
+        while(i>=0 && j>=0) {
+            if(arr[i][j] == 1) return false;
+            i--;
+            j--;
+        }
+
+        //resetting
+        i=r;
+        j=c;
+
+        //upwards-right
+        while(i>=0 && j<=lastIndex){
+            if(arr[i][j] == 1) return false;
+
+            i--;
+            j++;
+        }
+
+        //if all loops ended that means safe
+        return true;
+    }
+}

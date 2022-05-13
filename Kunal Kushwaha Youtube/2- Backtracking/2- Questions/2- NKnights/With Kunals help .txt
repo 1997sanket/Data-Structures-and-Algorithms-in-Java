@@ -1,0 +1,141 @@
+public class Main {
+
+    //to check whether our count method is returning correct answer.
+    private static int ext = 0;
+
+    /*
+        Note: This problem is different from Knights tour
+
+        Check diagram for better understanding.
+     */
+
+    public static void main(String[] args) {
+        boolean [][] arr = new boolean[3][3];
+        //nKnights(arr,0, 0, arr.length);
+        System.out.println(nKnightsCount(arr,0, 0, arr.length));
+        System.out.println("ext = " + ext);
+    }
+
+    private static void nKnights(boolean[][] arr, int r, int c, int knights) {
+
+        //if all knights are placed, print the board.
+      if(knights == 0) {
+            ext++;
+          displayBoard(arr);
+          System.out.println();
+          return;
+      }
+
+        //for end of row traversal
+        if(r==arr.length-1 && c==arr.length) return;
+
+      //if cols are finished, hop to the next row
+      if(c==arr.length) {
+          nKnights(arr, r+1, 0, knights);
+          return;   //return is important here, because when control comes back here, we dont have to check again for the same row and col.
+      }
+
+
+      if(isSafe(arr, r, c)) {
+          arr[r][c] = true; //place the knight only if it's safe.
+          nKnights(arr, r, c+1, knights-1); //check the next column, and reduce the knight
+          arr[r][c] = false;    //BT
+      }
+
+      //even its not safe, check for next col
+      nKnights(arr, r, c+1, knights);
+    }
+
+
+
+    private static int nKnightsCount(boolean[][] arr, int r, int c, int knights) {
+
+        int counter = 0;
+
+        //if all knights are placed, print the board.
+        if(knights == 0) {
+            ext++;
+            displayBoard(arr);
+            System.out.println();
+            return 1;
+        }
+
+        //for end of row traversal
+        if(r==arr.length-1 && c==arr.length) return counter;
+
+        //if cols are finished, hop to the next row
+        if(c==arr.length) {
+            counter += nKnightsCount(arr, r+1, 0, knights);
+            return counter;   //return is important here, because when control comes back here, we dont have to check again for the same row and col.
+        }
+
+
+        if(isSafe(arr, r, c)) {
+            arr[r][c] = true; //place the knight only if it's safe.
+            counter += nKnightsCount(arr, r, c+1, knights-1); //check the next column, and reduce the knight
+            arr[r][c] = false;    //BT
+        }
+
+        //even its not safe, check for next col
+        counter += nKnightsCount(arr, r, c+1, knights);
+        return counter;
+    }
+
+    //Remaining
+    private static boolean isSafe(boolean[][] arr, int r, int c) {
+
+        //right-right-up
+        if(isValid(arr, r-1, c+2)) {
+
+            if(arr[r-1][c+2]) {
+                return false;
+            }
+        }
+
+        //up-up-right
+        if(isValid(arr, r-2, c+1)) {
+
+            if(arr[r-2][c+1]) {
+                return false;
+            }
+        }
+
+        //up-up-left
+        if(isValid(arr, r-2, c-1)) {
+
+            if(arr[r-2][c-1]) {
+                return false;
+            }
+        }
+
+        //left-left-up
+        if(isValid(arr, r-1, c-2)) {
+
+            if(arr[r-1][c-2]) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    private static boolean isValid(boolean[][] arr, int r, int c) {
+
+        return (r>=0 &&
+                r<arr.length &&
+                c>=0 &&
+                c<arr.length);
+    }
+
+    private static void displayBoard(boolean[][] arr) {
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if(arr[i][j]) System.out.print("K");
+                else System.out.print("-");
+            }
+            System.out.println();
+        }
+    }
+}
