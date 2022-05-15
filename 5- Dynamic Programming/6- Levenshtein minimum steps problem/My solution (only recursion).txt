@@ -1,0 +1,72 @@
+public class Main {
+static int counter = 0;
+    public static void main(String[] args) {
+
+        String ans = "Base";
+        String given = "Basic";
+
+        levenshtein(ans, given, 0, 0);
+        System.out.println("Minimum steps required to make the ans string into the given string = " + counter);
+
+    }
+
+    private static void levenshtein(String ans, String given, int i, int j) {
+
+        //if answer is found
+        if(ans.equals(given)) {
+            System.out.println("ans = " + ans);
+            return;
+        }
+
+        //if ans is traversed but given is remaining, then only insert new elements in the ans
+        if(i==ans.length() && j<given.length()) {
+            counter++;
+            char c2 = given.charAt(j);
+            //insert the character
+            levenshtein(ans.substring(0, i) + c2 + ans.substring(i), given, i + 1, j+1);
+            return;
+        }
+
+        //if ans is not fully traversed but given string is done traversing, then only delete from elements the given string
+        if(j== given.length() && i<ans.length()) {
+            counter++;
+            //delete the character
+            levenshtein(ans.substring(0,i) + ans.substring(i+1), given, i+1, j+1);
+            return;
+        }
+
+        //if both are not over
+        char c1 = ans.charAt(i);
+        char c2 = given.charAt(j);
+
+        //if the characters are same just go forward
+        if(c1 == c2) {
+            levenshtein(ans, given, i+1, j+1);
+        }
+        else {
+
+            //if length is same,then just substitute
+            if(ans.length() == given.length()) {
+                counter++;
+                //substitute the character
+                levenshtein(ans.substring(0, i) + c2 + ans.substring(i + 1), given, i + 1, j+1);
+            }
+
+            //if ans' length is lesser than given length, then just insert
+            if(ans.length() < given.length()) {
+                counter++;
+                //insert the character
+                levenshtein(ans.substring(0, i) + c2 + ans.substring(i), given, i + 1, j+1);
+            }
+
+            //if ans' length is greater than given length, then just delete
+            if(ans.length() > given.length()) {
+                counter++;
+                //delete the character
+                levenshtein(ans.substring(0,i) + ans.substring(i+1), given, i+1, j+1);
+            }
+
+        }
+    }
+
+}
