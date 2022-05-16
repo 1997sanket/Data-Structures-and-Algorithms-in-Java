@@ -1,0 +1,84 @@
+public class Main {
+
+    /*
+        The algo is complex to understand. Instead of trying to know how it works, just take the below basic example
+        and dry run it on paper, you will understand how it works. Anyhow you will have to remember some of it.
+
+        I have solved this question, but this solution is lot more elegant, as it has a recurrence relation.
+
+        Note: we aren't actually converting the ans string.
+     */
+
+    public static void main(String[] args) {
+
+        //change s1 to s2
+        String s1 = "b";
+        String s2 = "a";
+
+        //System.out.println(levenshtein(s1, s2, s1.length(), s2.length()));
+        //System.out.println("min no of operations to edit string s1 = " + levenshteinPrint(s1, s2, s1.length(), s2.length(), ""));
+        System.out.println(levenshteinOptimized(s1, s2, s1.length(), s2.length()));
+        
+    }
+
+    private static int levenshtein(String ans, String given, int m, int n) {
+
+        if(m==0 || n==0) return Math.max(m,n);  //if length of any of the strings become zero, return max of both.
+
+        //if characters are same
+        if(ans.charAt(m-1) == given.charAt(n-1)) {
+            return levenshtein(ans, given, m-1, n-1);
+        }
+        else {
+            int insertOps  = 1 + levenshtein(ans, given, m, n-1);   //since length of s1 increases after inserting, keep m the same. (s1 = "ab")
+            int deleteOps = 1 + levenshtein(ans, given, m-1, n);    //since length of s1 decreases after deleting, keep n the same. (s1 = "")
+            int replaceOps = 1 + levenshtein(ans, given, m-1, n-1); //after substituting we can go ahead with next chars.   (s1 = "a")
+
+            return Math.min(insertOps, Math.min(deleteOps, replaceOps));    //return min of all these operations.
+        }
+
+    }
+
+
+    //trying to print, if we can change the string
+    private static int levenshteinPrint(String ans, String given, int m, int n, String processed) {
+
+        if(processed.equals(given)) {
+            System.out.println("processed = " + processed);
+        }
+
+        if(m==0 || n==0) return Math.max(m,n);
+
+        if(ans.charAt(m-1) == given.charAt(n-1)) {
+            return levenshteinPrint(ans, given, m-1, n-1, "");
+        }
+        else {
+            int insertOps  = 1 + levenshteinPrint(ans, given, m, n-1, ans.substring(0, m) + given.charAt(n-1) + ans.substring(m));
+            int deleteOps = 1 + levenshteinPrint(ans, given, m-1, n, ans.substring(0, m-1) + ans.substring(m));
+            int replaceOps = 1 + levenshteinPrint(ans, given, m-1, n-1, ans.substring(0, m-1) + given.charAt(n-1) + ans.substring(m));
+
+            return Math.min(insertOps, Math.min(deleteOps, replaceOps));
+        }
+
+    }
+
+
+//We can combine the replace operation with the normal "just" traversal operation when the characters are same
+    private static int levenshteinOptimized(String ans, String given, int m, int n) {
+
+        if(m==0 || n==0) return Math.max(m,n);
+
+        //if characters are same then k will be 0 or else 1
+        int k = ans.charAt(m-1) == given.charAt(n-1) ? 0 : 1;
+
+        int replaceOps = k + levenshteinOptimized(ans, given, m-1, n-1);
+        int insertOps  = 1 + levenshteinOptimized(ans, given, m, n-1);
+        int deleteOps = 1 + levenshteinOptimized(ans, given, m-1, n);
+
+
+        return Math.min(insertOps, Math.min(deleteOps, replaceOps));
+
+    }
+
+    
+}

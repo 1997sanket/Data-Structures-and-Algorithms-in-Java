@@ -1,0 +1,61 @@
+public class Main {
+
+    private static int [][] memo;
+
+    public static void main(String[] args) {
+
+        //change s1 to s2
+        String s1 = "Pneumonoultramicroscopicsilicovolcanoconiosis";
+        String s2 = "Pneumonoultramicroscopicsilicovolcanoconiosiz";
+
+        int m = s1.length();
+        int n = s2.length();
+
+        memo = new int[m][n];
+        //initialize it with -1
+        for(int i=0; i< memo.length; i++) {
+            for (int j = 0; j< memo[i].length; j++) {
+                memo[i][j] = -1;
+            }
+        }
+
+        System.out.println("min edit steps : " + levenshteinDP(s1, s2, m, n));
+        System.out.println();
+
+        System.out.println("printing memo array");
+        //printing the memo array
+        for(int i=0; i< memo.length; i++) {
+            for (int j = 0; j< memo[i].length; j++) {
+                System.out.print(memo[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    private static int levenshteinDP(String ans, String given, int m, int n) {
+
+        if(m==0 || n==0) return Math.max(m,n);
+
+        //if answer is already present in the memo, return it
+        if(memo[m-1][n-1] != -1) {
+            //System.out.println("returning value from memo " + (m-1) + "" + (n-1));
+            return memo[m-1][n-1];
+        }
+
+//if characters are same then k will be 0 or else 1
+        int k = ans.charAt(m-1) == given.charAt(n-1) ? 0 : 1;
+        int replaceOps = k + levenshteinDP(ans, given, m-1, n-1);
+
+        int insertOps  = 1 + levenshteinDP(ans, given, m, n-1);
+        int deleteOps = 1 + levenshteinDP(ans, given, m-1, n);
+
+        int minEdits = Math.min(insertOps, Math.min(deleteOps, replaceOps));
+
+        //System.out.println("adding " + minEdits + " to " + (m-1) + "" + (n-1));
+        //store the answer in the memo
+        memo[m-1][n-1] = minEdits;
+
+        return minEdits;
+    }
+}
