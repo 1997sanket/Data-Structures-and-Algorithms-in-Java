@@ -1,0 +1,61 @@
+import java.util.*;
+
+/*
+    Recurence relation
+        f(0, target) = f(givenLengths, target-givenLengths)
+
+
+     Algo
+        First see the simplified version, then come here.
+        Was able to solve this on my own, thanks to Kunal Kushwaha.
+
+*/
+
+public class Main {
+
+    // to store key value pair of length and profit
+    private static Map<Integer, Integer> map = new TreeMap<>();
+
+    public static void main(String[] args) {
+        map.put(0, 0);
+        map.put(1, 2);
+        map.put(2, 5);
+        map.put(3, 7);
+        map.put(4, 8);
+
+        int target = 30;
+
+
+        System.out.println("Maximum profit : " + rodCutting(0,target));
+
+    }
+
+    private static int rodCutting(int l, int t) {
+
+        //if target becomes 0 return the value for the current l from the map.
+        if(t == 0) return map.get(l);
+
+        //to store all the profits and return max.
+        List<Integer> list = new ArrayList<>();
+
+        //so that we iterate through all the keys in every single function call.
+        Iterator<Integer> itr = map.keySet().iterator();    //very important to take this in the function body and not in argument
+
+        while(itr.hasNext()) {
+            int key = itr.next();   //get the first length
+
+            //only do recursion, if the length is <= to target and !=0
+            if(key<=t && key!=0) {
+                //    value of current length + f(key, t-key)
+                list.add(map.get(l) + rodCutting(key, t-key));
+            }
+        }
+
+        //sort the list so that the max value is at the end
+        Collections.sort(list);
+
+        //return the last value, which will be the biggest.
+        int maxProfit = list.get(list.size()-1);
+        return maxProfit;
+    }
+}
