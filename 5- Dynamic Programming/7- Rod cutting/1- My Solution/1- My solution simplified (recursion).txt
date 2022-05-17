@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class Main {
+
+    // to store key value pair of length and profit
+    private static Map<Integer, Integer> map = new HashMap<>();
+
+    public static void main(String[] args) {
+        map.put(0, 0);
+        map.put(1, 2);
+        map.put(2, 5);
+        map.put(3, 7);
+        map.put(4, 8);
+        System.out.println("Maximum profit : " + rodCutting(0,5));
+
+    }
+
+    private static int rodCutting(int l, int t) {
+
+        if(t == 0) return map.get(l);
+
+        List<Integer> list = new ArrayList<>();
+
+        for(int i=1; i<=4; i++) {
+            if(i<=t) {
+                list.add(map.get(l) + rodCutting(i, t-i));
+            }
+        }
+
+        Collections.sort(list);
+        return list.get(list.size()-1);
+    }
+}
