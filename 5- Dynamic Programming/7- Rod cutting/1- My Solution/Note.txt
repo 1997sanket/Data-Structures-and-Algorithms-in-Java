@@ -1,0 +1,5 @@
+The memo array can be optimized like
+
+int [][] memo = new int[target+1][target+1]
+
+as we are anyways not going above target 

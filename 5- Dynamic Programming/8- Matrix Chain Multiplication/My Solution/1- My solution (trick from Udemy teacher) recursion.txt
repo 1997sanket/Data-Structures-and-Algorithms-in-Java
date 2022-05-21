@@ -1,0 +1,140 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+class Matrix {
+    private int row;
+    private int col;
+
+    public Matrix(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    @Override
+    public String toString() {
+        return "Matrix{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
+}
+
+//Contains our Matrix and the result till now (because I had the requirement of returning 2 values: Matrix for row and col multiplication and result for final multiplication eg: for a M1(2,3) and M2(3,4), result = 2*3*4 = 24
+class Response {
+    private Matrix m;
+    private Integer result;
+
+    public Response(Matrix m, int result) {
+        this.m = m;
+        this.result = result;
+    }
+
+    public Matrix getM() {
+        return m;
+    }
+
+    public void setM(Matrix m) {
+        this.m = m;
+    }
+
+    public Integer getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    @Override
+    public String  toString() {
+        return "Response{" +
+                "m=" + m +
+                ", result=" + result +
+                '}';
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+
+        Matrix [] matrices = {
+                new Matrix(5, 2),
+                new Matrix(2, 3),
+                new Matrix(3, 4)
+        };
+
+        System.out.println("Minimum matrix multiplication  = " + _chain(matrices, 0, matrices.length));
+    }
+
+    private static int _chain(Matrix[] matrices, int i, int n) {
+
+        Response r = chain(matrices, i, n);
+        return r.getResult();
+    }
+
+    //helper function
+    private static Response chain(Matrix[] matrices, int i, int n) {
+
+        //base condition (if only 1 element is there, then just return 0 for min multiplications and that matrix itself
+        if(i == matrices.length-1) return new Response(matrices[i], 0);
+
+        //to store all our results from recursive call and then finally we will sort and return the min.
+        List<Response> list = new ArrayList<>();
+
+        //outer loop is for putting the slashes (checkout the diagram) (for length 3 array, it will run twice)
+        for(int k=i; k<=(n-2); k++) {
+
+            //for A1, A1*A2, A1*A2*A3,...
+            Matrix mul = new Matrix(1,1);
+
+            //inner loop is for multiplying matrices
+            for(int l=i; l<=k; l++) {
+                Matrix m1 = matrices[l];
+
+                //if the mul consists of 1,1; then the multiplication strategy will be different
+                if(mul.getRow() == 1 && mul.getCol() == 1) {
+                    mul = new Matrix(m1.getRow(), m1.getCol());
+                    continue;
+                }
+
+                mul = matrixRangeMul(mul, m1);
+            }
+
+            Response subResult = chain(matrices, k+1, n);
+            Matrix sub = subResult.getM();
+
+            Matrix result = matrixRangeMul(mul, sub);
+
+            Response finalResult = new Response(result, mul.getRow() * mul.getCol() * sub.getCol());
+            list.add(finalResult);
+        }
+
+
+        Collections.sort(list, (r1,r2)-> r1.getResult().compareTo(r2.getResult()));
+        return list.get(0);
+    }
+
+    //for matrices M1(2,3) and M2(3,4), return M3(2,4)
+    private static Matrix matrixRangeMul(Matrix m1, Matrix m2) {
+        return new Matrix(m1.getRow(), m2.getCol());
+    }
+}
