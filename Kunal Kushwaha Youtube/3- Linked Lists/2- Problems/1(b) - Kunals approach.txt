@@ -1,0 +1,30 @@
+public void insertAtIndexRec(int data, int index) {
+
+        //if first position
+        if(index == 0) {
+            insertAtFirst(data);
+            return;
+        }
+
+        //if last pos
+        if(index == size) {
+            insertAtLast(data);
+        }
+
+        insertAtIndexRec(head, data, index-1);
+    }
+
+    private void insertAtIndexRec(Node node, int data, int index) {
+
+        //found
+        if(index == 0) {
+            Node n = new Node(data);
+            n.next = node.next;
+            node.next = n;
+            size++;
+
+            return;
+        }
+
+        insertAtIndexRec(node.next, data, index-1);
+    }

@@ -1,0 +1,41 @@
+public void removeDuplicatesFromSortedList() {
+
+        //two pointers
+        Node n = head;  //to check for duplicate
+        Node t = head;  //traversing pointer
+
+        while(t!=null) {
+
+            //first node
+            if(t == head) {
+                t = t.next;
+                continue;
+            }
+
+            //if same change pointers
+            if(t.data == n.data) {
+                n.next = t.next;
+                t = t.next;
+
+                //to update tail
+                if(n.next == null) {
+                    tail = n;
+                }
+
+                //change size
+                size--;
+            }
+
+            //else if new node, go to next
+            else {
+                n = t;
+                t = t.next;
+
+                //to update tail
+                if(n.next == null) {
+                    tail = n;
+                }
+            }
+
+        }
+    }

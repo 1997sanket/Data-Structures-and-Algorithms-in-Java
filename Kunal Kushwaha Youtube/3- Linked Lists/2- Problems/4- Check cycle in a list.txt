@@ -1,0 +1,316 @@
+public class LL {
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    private class Node {
+        private int data;
+        private Node next;
+
+        public Node(int data) {
+            this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "data=" + data +
+                    ", next=" + next +
+                    '}';
+        }
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Node getHead() {
+        return head;
+    }
+
+    public Node getTail() {
+        return tail;
+    }
+
+
+    public void insertAtFirst(int data) {
+        Node n = new Node(data);
+        n.next = head;
+        head = n;
+        size++;
+    }
+
+    public void insert(int data) {
+
+        //first node
+        if(head == null) {
+
+            Node n = new Node(data);
+            head = n;
+            tail = n;
+            size++;
+
+            return;
+        }
+
+        Node n = new Node(data);
+        tail.next = n;
+        tail = n;
+        size++;
+    }
+
+    public void insertAtLast(int data) {
+
+        //first node
+        if(head == null) {
+
+            Node n = new Node(data);
+            head = n;
+            tail = n;
+            size++;
+
+            return;
+        }
+
+        Node n = new Node(data);
+        tail.next = n;
+        tail = n;
+        size++;
+    }
+
+    public void insertAtIndex(int data, int index) {
+
+        if(index > size) {
+            System.out.println("Out of bound");
+            return;
+        }
+
+        if(index < 0) {
+            System.out.println("Out of bound");
+            return;
+        }
+
+        //if first pos
+        if(index == 0) {
+            Node n = new Node(data);
+            n.next = head;
+            head = n;
+            size++;
+
+            return;
+        }
+
+        //if last pos
+        if(index == size) {
+            Node n = new Node(data);
+            tail.next = n;
+            tail = n;
+            size++;
+
+            return;
+        }
+
+        Node tempNode = head;
+        int temp = 0;
+
+        while(temp != (index-1)) {
+
+            tempNode = tempNode.next;
+            temp++;
+        }
+
+        Node n = new Node(data);
+        n.next = tempNode.next;
+        tempNode.next = n;
+        size++;
+
+    }
+
+    public void display() {
+
+        Node n = head;
+
+        if(n==null) {
+            System.out.println("Empty");
+            return;
+        }
+
+        while(n!=null) {
+            System.out.print(n.data + " -> ");
+            n = n.next;
+        }
+
+        System.out.println();
+    }
+
+
+    public void insertAtIndexRec(int data, int index) {
+
+        //if first position
+        if(index == 0) {
+            insertAtFirst(data);
+            return;
+        }
+
+        //if last pos
+        if(index == size) {
+            insertAtLast(data);
+        }
+
+        insertAtIndexRec(head, data, index-1);
+    }
+
+    private void insertAtIndexRec(Node node, int data, int index) {
+
+        //found
+        if(index == 0) {
+            Node n = new Node(data);
+            n.next = node.next;
+            node.next = n;
+            size++;
+
+            return;
+        }
+
+        insertAtIndexRec(node.next, data, index-1);
+    }
+
+    public void removeDuplicatesFromSortedList() {
+
+        //two pointers
+        Node n = head;  //to check for duplicate
+        Node t = head;  //traversing pointer
+
+        while(t!=null) {
+
+            //first node
+            if(t == head) {
+                t = t.next;
+                continue;
+            }
+
+            //if same change pointers
+            if(t.data == n.data) {
+                n.next = t.next;
+                t = t.next;
+
+                //to update tail
+                if(n.next == null) {
+                    tail = n;
+                }
+
+                //change size
+                size--;
+            }
+
+            //else if new node, go to next
+            else {
+                n = t;
+                t = t.next;
+
+                //to update tail
+                if(n.next == null) {
+                    tail = n;
+                }
+            }
+
+        }
+    }
+
+
+    public static LL mergeTwoSortedLists(LL list1, LL list2) {
+
+        LL finalList = new LL();
+
+        Node t1 = list1.head;
+        Node t2 = list2.head;
+
+        while(t1!=null && t2!=null) {
+
+            if(t2.data <= t1.data) {
+                finalList.insert(t2.data);
+                t2 = t2.next;
+            }
+            else {
+                finalList.insert(t1.data);
+                t1 = t1.next;
+            }
+        }
+
+        //copy all remaining data from t2 and t1
+        while(t1!=null) {
+            finalList.insert(t1.data);
+            t1 = t1.next;
+        }
+
+        while(t2!=null) {
+            finalList.insert(t2.data);
+            t2 = t2.next;
+        }
+
+        return finalList;
+    }
+
+    public boolean checkCycle() {
+
+        boolean flag = false;
+
+        Node slow = head;
+        Node fast = head;
+
+        while(fast!=null && fast.next != null) {
+
+            if(slow == fast && slow!=head) {
+                flag = true;
+                break;
+            }
+
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return flag;
+    }
+
+    public int findLengthOfCycle() {
+
+        boolean flag = false;
+        int counter = 0;
+
+        Node slow = head;
+        Node fast = head;
+
+        Node n = null;
+
+        while(fast!=null && fast.next != null) {
+
+            if(slow == fast && slow!=head) {
+                flag = true;
+                n = slow;   //once the pointers become same, get that Node.
+                break;
+            }
+
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //Now count the no of nodes till we are again back to the same node.
+        Node temp = n.next;
+        counter++;
+
+        while(temp!=n) {
+            counter++;
+            temp = temp.next;
+        }
+
+        return counter;
+    }
+
+
+    public void createCycleScenario() {
+
+        tail.next = head.next;
+    }
+
+}
