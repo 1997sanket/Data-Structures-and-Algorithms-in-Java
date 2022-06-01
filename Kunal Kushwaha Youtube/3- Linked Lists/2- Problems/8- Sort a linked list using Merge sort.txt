@@ -1,0 +1,61 @@
+public class Main {
+    public static void main(String[] args) {
+
+        LL list = new LL();
+
+        list.insert(5);
+        list.insert(4);
+        list.insert(3);
+        list.insert(2);
+        list.insert(1);
+
+        LL result = mergeSort(list);
+        result.display();
+
+    }
+
+    public static LL mergeSort(LL list) {
+
+        //helper method
+        return _mergeSort(list, list.getHead(), list.getTail());
+    }
+
+    private static LL _mergeSort(LL list, LL.Node start, LL.Node end) {
+
+        //to contain our merged list
+        LL finalList = new LL();
+
+        //base condition
+        if(start == end) {
+            finalList.insert(start.getData());
+            return finalList;
+        }
+
+        LL list1 = null;
+        LL list2 = null;
+
+        //if only 2 elements remaining (we need to do this, because unlike in an array, middle element of a Linked List with even elements returns 2nd element
+        //Eg:  list [1 -> 2 -> 3 -> 4]  => middle=3
+        if(start.getNext() == end) {
+            list1 = _mergeSort(list, start, start);
+            list2 = _mergeSort(list, end, end);
+        }
+        else {
+            LL.Node middle = list.findMiddleGivenStartAndEndNode(start, end);
+
+            //head till middle
+            list1 = _mergeSort(list, start, middle);
+
+            //middle+1 till tail
+            list2 = _mergeSort(list, middle.getNext(), end);
+
+        }
+
+        //merger
+        finalList = LL.mergeTwoSortedLists(list1, list2);
+
+        return finalList;
+
+    }
+
+}

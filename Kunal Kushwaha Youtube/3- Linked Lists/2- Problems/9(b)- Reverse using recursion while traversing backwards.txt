@@ -1,0 +1,17 @@
+ //more proper way (properly using recursion concept and easy to understand)
+    public Node reverseRecBackwards(Node current) {
+
+        //if last element
+        if(current.next == null) {
+            head = current;   //make it head
+            return current;   //return the last element
+        }
+
+        Node last = reverseRecBackwards(current.next);
+
+        last.next = current;
+        tail = current; //make current as tail
+        tail.next = null;   //and offcourse tail.next will be null
+
+        return current;
+    }

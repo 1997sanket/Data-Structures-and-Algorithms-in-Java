@@ -1,0 +1,42 @@
+public class Main {
+    public static void main(String[] args) {
+
+        System.out.println(happyNumber(19));
+    }
+
+    //same as finding cycle in a linked list
+    public static boolean happyNumber(int n) {
+
+        //fast and slow pointer at the beginning initially.
+        int slow = n;
+        int fast = n;
+
+        //using do while, because initially we should not be checking the condition.
+        do{
+            slow = findSquareOfDigits(slow);    //slow goes 1 step ahead
+            fast = findSquareOfDigits(findSquareOfDigits(fast));    //fast goes 2 steps ahead
+        }while(slow!=fast);
+
+        /*
+            Whether we get Happy number or not, cycle will always be present, look at the diagram.
+         */
+
+        //if found
+        if(slow == 1) return true;
+
+        else return false;
+    }
+
+    private static int findSquareOfDigits(int n) {
+
+        int ans = 0;
+
+        while(n>0) {
+            int rem = n%10;
+            ans += rem * rem;
+            n = n/10;
+        }
+
+        return ans;
+    }
+}

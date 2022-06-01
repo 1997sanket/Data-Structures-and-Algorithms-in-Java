@@ -1,0 +1,32 @@
+ public void reverseRec() {
+
+        _reverseRec(head, null);
+    }
+
+    private void _reverseRec(Node n, Node prev) {
+
+        if(n == null) {
+            head = prev;
+            return;
+        }
+
+        //last element
+        if(n.next == null) {
+            n.next = prev;
+            head = n;
+            return;
+        }
+
+        Node t1 = n;    //first
+        Node t2 = n.next;   //second
+        Node temp = t2.next;    //third
+
+        t2.next = t1;
+        t1.next = prev;
+
+        if(t1 == head) {
+            tail = t1;
+        }
+
+        _reverseRec(temp, t2);
+    }
