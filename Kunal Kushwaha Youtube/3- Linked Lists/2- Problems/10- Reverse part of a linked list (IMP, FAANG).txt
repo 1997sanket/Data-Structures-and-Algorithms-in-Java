@@ -1,0 +1,51 @@
+//remember start and end are indexes (1 being the first node)
+    public Node reverseApart(Node head, int start, int end) {
+
+        //if start and end indexes are same then no need to reverse
+        if(start == end) return head;
+
+        Node prev = null;   //because we need a node before the start node in the end to switch the pointers
+        Node cur = head;
+
+        //we need cur!=null to avoid NPE.
+        for (int i = 1; cur!=null && i < start; i++) {
+            prev = cur;
+            cur = cur.next;
+        }
+
+        //after the above for loop our cur will pointing to the start index node and prev will be pointing to its previous node
+
+        Node startNode = cur;   //preserve current node because it is needed later
+        Node beforeStart = prev; //preserve the node before the current node because it is needed later
+
+
+        //now start the reversing process
+        Node t1 = cur;
+        Node t2 = cur.next;
+        Node temp = null;
+
+        //if start = 2 and end = 4, it will run 2 times
+        int x = end-start;
+
+        //we need cur!=null to avoid NPE.
+        while(x!=0 && cur!=null) {
+            temp = t2.next;
+            t2.next = t1;
+            t1 = t2;
+            t2 = temp;
+            x--;
+        }
+
+        //if before start is null, that means the start node is the HEAD of the Linked List, in that the head will change
+        if(beforeStart != null)
+            beforeStart.next = t1;
+        else {
+            head = t1;
+            this.head = t1; //because our head for printing and leetcode's head is different
+        }
+
+        //our start node will not point to wherever t2 is after the iteration.
+        startNode.next = t2;
+
+        return head;
+    }
