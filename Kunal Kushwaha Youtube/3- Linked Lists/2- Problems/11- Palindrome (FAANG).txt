@@ -1,0 +1,34 @@
+public boolean checkPalindrome(Node root) {
+        Node n = _checkPalindrome(root, root);
+
+        if(n!=null) return true;
+
+        return false;
+    }
+
+    private Node _checkPalindrome(Node p1, Node p2) {
+        /*
+            NOTE: We need to check first with the last node, then second with second-last node and so on...
+                    But how do we go back in a singly-linked list ?
+                        there is only 1 solution, RECURSION.
+                        So, once we have reached the last element after traversing, while coming back we do the checking.
+         */
+
+        //if last element
+        if(p2.next == null) {
+            //check the 2 nodes
+            if(p1.data == p2.data) return p1.next;
+
+            else return null;
+        }
+
+        Node t = _checkPalindrome(p1, p2.next);
+
+        if(t!=null && t.data==p2.data) {
+            if(t.next != null) return t.next;
+            else return t; //if has reached to last element
+        }
+
+        return null;
+
+    }
