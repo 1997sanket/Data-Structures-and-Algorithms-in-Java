@@ -1,0 +1,32 @@
+public void reOrder() {
+
+        _reOrder(head, head, findMiddle());
+    }
+
+    //basically we are taking 1st and last, then 2nd and second last and so on.
+    //HINT: There is only 1 way to go back in a singly list, RECURSION. Try drawing a diagram, you will understand faster.
+    private Node _reOrder(Node p1, Node p2, Node mid) {
+
+        //if p2 is at last element
+        if(p2.next == null) {
+            Node t = p1.next;   //backup the 2nd element
+            p1.next = p2;   //1st element will now point to last element
+            p2.next = t;    //last element will point to 2nd element of the original structure
+
+            return t;   //return second element of the original structure
+        }
+
+        Node t = _reOrder(p1, p2.next, mid);    //t will hold the next element of the original structure
+
+        //if reached the middle of the list, no need to further swap the pointers
+        if(t == mid) {
+            t.next = null;  //this will be the new last element of the list hence its next will be null
+            return t;
+        }
+
+        //if "t" is not the middle element
+        t.next = p2;    //2nd element of og list will point to second last
+        p2.next = t.next;   //2nd last element will point to the third element of the og list.
+
+        return t.next;  //return next element of the OG list.
+    }

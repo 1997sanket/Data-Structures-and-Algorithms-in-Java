@@ -1,0 +1,4 @@
+1. For question 11 and 12, you can also find the middle of the list and reverse it from middle to end. That way we wont have to do 
+recursion.
+
+2. Fast, slow pointers and reversal of linked list and important concepts for Interviews.

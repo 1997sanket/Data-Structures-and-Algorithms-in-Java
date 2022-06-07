@@ -1,0 +1,21 @@
+//FAANGM hard level Leetcode question
+    public void reverseNodesInKGroup(int k) {
+
+        if(k > size) {
+            System.out.println("entered grouping is > than size of the list");
+        }
+
+        int start = 1;
+        int end = 1;
+
+        while(end <= size) {
+
+            end = start + (k-1);
+
+            System.out.println("start = " + start + " end = " + end);
+            reverseApart(head, start, end);	//see this method (solve it again, not very easy)
+
+            start = end + 1;
+        }
+
+    }
