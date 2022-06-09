@@ -1,0 +1,52 @@
+public void rotate(int k) {
+
+        Node p1 = head;
+        Node p2 = head;
+        Node t = null;
+
+        for (int i = 1; i <= k; i++) {
+
+            while (p2.next != null) {
+                t = p2;
+                p2 = p2.next;
+            }
+
+            t.next = null;
+            tail = t;   //new tail
+            p2.next = p1;
+            head = p2; //new head
+
+            t = null;
+            p1 = head;
+            p2 = head;
+        }
+    }
+
+    public void rotateOptimized(int k) {
+
+        if(k <=0 ) return;
+
+        Node p1 = head;
+        Node p2 = head;
+        Node t = head;
+
+        int rotations = k % size;   //if "k" is equal to the size or multiple of the size, then we don't need to rotate.
+
+        if(rotations == 0) return; //if "k" is equal to the size or multiple of the size, then we don't need to rotate.
+
+        for(int i=1; i<=rotations; i++) {
+            p2 = p2.next;
+        }
+
+        while(p2.next != null) {
+
+            p2 = p2.next;
+            t = t.next;
+        }
+
+        tail = t;
+        head = t.next;
+        t.next = null;
+        p2.next = p1;
+
+    }
